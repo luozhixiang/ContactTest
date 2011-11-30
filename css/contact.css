@@ -1,0 +1,48 @@
+* {
+	margin:0;
+	padding:0
+}
+img {
+	border:none
+}
+.tabct {
+	width:500px;
+	height:600px;
+	overflow:hidden;
+	margin-left:50px;
+	line-height:22px;
+	text-shadow:1px 1px 1px #ccc;
+	color:#000;
+	float:left
+}
+table {
+	width:90%;
+	border:1px solid #ccc;
+	border-radius:5px;
+	margin-top:10px;
+	box-shadow:2px 2px 1px #ccc
+}
+table td {
+	padding:5px
+}
+table input[type="text"] {
+	border-radius:3px;
+	border:1px solid #ccc;
+	height:18px;
+	box-shadow:1px 1px 1px #ccc
+}
+input[type="button"] {
+	border-radius:5px;
+	height:24px;
+	border:1px solid #ccc;
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #747474), color-stop(0.5, #6E6E6E), color-stop(0.51, #7E7E7E), color-stop(1, #8D8D8D));
+	color:#000;
+	box-shadow:1px 1px 1px #ccc
+}
+.delUser,.delGroup{
+				font-family: courier;
+				font-size: 14px;
+				float: right;
+				cursor: pointer;
+				color:red;
+			}

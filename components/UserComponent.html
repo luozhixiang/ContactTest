@@ -1,0 +1,81 @@
+<script type="text/javascript">
+	brite.registerComponent("UserComponent",
+		{
+			parent: "#user_div"
+		},
+		{
+			create: function(data){
+				var json = {};
+				json.userLlist = data;
+				var $e = $($("#tmplUserContent").render(json));
+				return $e;
+			},
+			postDisplay:function(data,config){
+					// --- Create User --- //
+					$("#createUserBtn").click(function(){
+						var userJson = {};
+						userJson.name=$('#name').val();
+						userJson.email=$('#email').val();
+						userJson.pno=$('#pno').val();
+						brite.dm.create("user",userJson);
+						$("#group_div_top").hide();
+						
+					});
+					// --- delete User --- //
+					$("#userList").delegate(".delUser","click",function(){
+						var objRef = $(this).bObjRef("user");
+						if (objRef){
+							brite.dm.remove("user",objRef.id).done(function(){
+								$("#group_div_top").hide();
+							});
+						}
+					});
+			}
+		});
+		
+</script>
+<!--  /Simple helloComponent -->
+ 
+<script id="tmplUserContent" type="text/html">
+Users:<br>
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td>Name:</td>
+      <td><input type="text" id="name"></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><input type="text" id="email"></td>
+    </tr>
+    <tr>
+      <td>PhoneNumber:</td>
+      <td><input type="text" id="pno"></td>
+    </tr>
+    <tr>
+      <td colspan="2"><input type="button" id="createUserBtn" value="Create"></td>
+    </tr>
+  </table>
+ <table cellpadding="0" cellspacing="0" id="userList">
+    <tr>
+      <td></td>
+      <td>Name</td>
+      <td>Email</td>
+      <td>PhoneNumber</td>
+      <td>Groups</td>
+      <td></td>
+    </tr>
+    <tbody id="user_list_body_div">
+    {{each userLlist}}
+    <tr>
+	  <td  data-obj_type="user" data-obj_id="${id}"><span class='delUser'>x</span></td>
+      <td>${name}</td>
+      <td>${email}</td>
+      <td>${pno}</td>
+      <td>{{each groups}}${name}<br/>{{/each}}</td>
+      <td><input type="button" onclick="addGroupToUser('${id}')" value="Add Group"></td>
+    </tr>
+    {{/each}}
+    </tbody>
+  </table>
+
+</script>

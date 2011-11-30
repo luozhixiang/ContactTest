@@ -1,0 +1,104 @@
+<script type="text/javascript">
+	brite.registerComponent("GroupComponent",
+		{
+			parent: "#group_div"
+		},
+		{
+			create: function(data){
+				
+				var json = {};
+				json.groups = data;
+				var $e = $($("#tmplGroupContent").render(json));
+				return $e;
+			},
+			postDisplay:function(data,config){
+				// --- Create Group --- //
+				$("#createGroupBtn").click(function(){
+					var groupJson = {};
+					groupJson.name=$('#gname').val();
+					brite.dm.create("group",groupJson);
+					
+				});
+				// --- delete Group --- //
+				$("#groupList").delegate(".delGroup","click",function(){
+					var objRef = $(this).bObjRef("group");
+					if (objRef){
+						brite.dm.remove("group",objRef.id).done(function(){
+							// --remove this group from user list
+							brite.dm.list("user").done(function(userList){
+								var ulen = userList.length;
+								for(var i=0;i<ulen;i++){
+									var user = userList[i];
+									var userGroups = user.groups;
+									var index = brite.util.array.getIndex(userGroups,"id",objRef.id);
+									if(index>=0){
+										brite.util.array.remove(userGroups,index,index+1);
+									}
+									brite.dm.update("user",user.id,parseUser2Json(user,userGroups)).done(function(data){});
+
+								}					
+							});
+						});
+					}
+				});	
+				$("#saveGroup2UserBtn").click(function(){
+		
+					brite.dm.get("user",$('#selectedUid').val()).done(function(user){
+						var groupsJson = [];
+						var idx = 0
+						$('input[name=gchk]').each(function(i){
+							if($(this).is(":checked")){
+								brite.dm.get("group",$(this).val()).done(function(group){
+									groupsJson[idx]=group;
+									idx++;
+								});
+								
+							}
+						});
+						brite.dm.update("user",user.id,parseUser2Json(user,groupsJson)).done(function(data){
+									alert("success");
+									$("#group_div_top").hide();
+						});
+			
+			
+					});
+					
+				});
+			}
+		});
+
+</script>
+<!--  /Simple helloComponent -->
+ 
+<script id="tmplGroupContent" type="text/html">
+Groups:<br>
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td>Name:</td>
+      <td><input type="text" id="gname"></td>
+    </tr>
+    <tr>
+      <td colspan="2"><input type="button" id="createGroupBtn" value="Create"></td>
+    </tr>
+  </table>
+  <br/>
+  
+  <br/>
+ <table cellpadding="0" cellspacing="0" id="groupList">
+    <tr>
+      <td></td>
+      <td>Name</td>
+    </tr>
+    <tbody id="group_list_body_div">
+    {{each groups}}
+    <tr>
+	  <td><input type="checkbox" value="${id}" ${chkflg} name="gchk"></td>
+      <td>${name}</td>
+      <td data-obj_type="group" data-obj_id="${id}"><span class='delGroup'>x</span></td>
+    </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  <input type="button" id="saveGroup2UserBtn" value="Save groups">
+
+</script>
