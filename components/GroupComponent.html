@@ -16,60 +16,49 @@
 				$("#createGroupBtn").click(function(){
 					var groupJson = {};
 					groupJson.name=$('#gname').val();
-					brite.dm.create("group",groupJson);
+					brite.dm.create("Groups",groupJson);
 					
 				});
 				// --- delete Group --- //
 				$("#groupList").delegate(".delGroup","click",function(){
-					var objRef = $(this).bObjRef("group");
+					var objRef = $(this).bObjRef("Groups");
 					if (objRef){
-						brite.dm.remove("group",objRef.id).done(function(){
-							// --remove this group from user list
-							brite.dm.list("user").done(function(userList){
-								var ulen = userList.length;
-								for(var i=0;i<ulen;i++){
-									var user = userList[i];
-									var userGroups = user.groups;
-									var index = brite.util.array.getIndex(userGroups,"id",objRef.id);
-									if(index>=0){
-										brite.util.array.remove(userGroups,index,index+1);
-									}
-									brite.dm.update("user",user.id,parseUser2Json(user,userGroups)).done(function(data){});
-
-								}					
-							});
-						});
+						brite.dm.remove("Groups",{id:objRef.id,callback:function(){
+							brite.dm.remove("GroupUser",{group_id:objRef.id,callback:function(){
+								//alert("success");
+								//$("#group_div_top").hide();
+							}});
+						}});
 					}
 				});	
 				$("#saveGroup2UserBtn").click(function(){
-		
-					brite.dm.get("user",$('#selectedUid').val()).done(function(user){
-						var groupsJson = [];
-						var idx = 0
+					var uid = $('#selectedUid').val();
+					brite.dm.remove("GroupUser",{user_id:uid,callback:function(){
 						$('input[name=gchk]').each(function(i){
 							if($(this).is(":checked")){
-								brite.dm.get("group",$(this).val()).done(function(group){
-									groupsJson[idx]=group;
-									idx++;
-								});
+								var gid = $(this).val();
+								//alert(1);
+								brite.dm.create("GroupUser",{group_id:gid,user_id:uid});
 								
 							}
 						});
-						brite.dm.update("user",user.id,parseUser2Json(user,groupsJson)).done(function(data){
-									alert("success");
-									$("#group_div_top").hide();
-						});
+						
+						alert("success");
+						$("#group_div_top").hide();
+					}});
+					
+					
+						
+						
 			
 			
-					});
+					
 					
 				});
 			}
 		});
 
 </script>
-<!--  /Simple helloComponent -->
- 
 <script id="tmplGroupContent" type="text/html">
 Groups:<br>
   <table cellpadding="0" cellspacing="0">
@@ -94,7 +83,7 @@ Groups:<br>
     <tr>
 	  <td><input type="checkbox" value="${id}" ${chkflg} name="gchk"></td>
       <td>${name}</td>
-      <td data-obj_type="group" data-obj_id="${id}"><span class='delGroup'>x</span></td>
+      <td data-obj_type="Groups" data-obj_id="${id}"><span class='delGroup'>x</span></td>
     </tr>
     {{/each}}
     </tbody>
