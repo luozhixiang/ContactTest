@@ -1,0 +1,13 @@
+{
+  "name": "contactTest",
+  "description": "Visual ContactTest Application.",
+  "version": "0.1",
+  "app": {
+    "launch": {
+      "local_path": "index.html"
+    }
+  },
+  "permissions": [
+    "unlimitedStorage"
+  ]
+}
