@@ -5,9 +5,8 @@
 		},
 		{
 			create: function(data){
-				var json = {};
+				var json = {userLlist:[]};
 				json.userLlist = data;
-				
 				var $e = $($("#tmplUserContent").render(json));
 				return $e;
 			},

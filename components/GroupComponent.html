@@ -23,36 +23,28 @@
 				$("#groupList").delegate(".delGroup","click",function(){
 					var objRef = $(this).bObjRef("Groups");
 					if (objRef){
-						brite.dm.remove("Groups",{id:objRef.id,callback:function(){
-							brite.dm.remove("GroupUser",{group_id:objRef.id,callback:function(){
-								//alert("success");
-								//$("#group_div_top").hide();
-							}});
-						}});
+						brite.dm.remove("Groups",{id:objRef.id}).done(function(){
+							brite.dm.remove("GroupUser",{group_id:objRef.id});
+						});
 					}
 				});	
 				$("#saveGroup2UserBtn").click(function(){
 					var uid = $('#selectedUid').val();
-					brite.dm.remove("GroupUser",{user_id:uid,callback:function(){
+					brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
 						$('input[name=gchk]').each(function(i){
 							if($(this).is(":checked")){
 								var gid = $(this).val();
-								//alert(1);
+								
 								brite.dm.create("GroupUser",{group_id:gid,user_id:uid});
 								
 							}
 						});
 						
-						alert("success");
-						$("#group_div_top").hide();
-					}});
+						//alert("success");
+						$("#group_div").html("<br/><br/><font color='red'>Sucess</font>");
+					});
 					
-					
-						
-						
-			
-			
-					
+				
 					
 				});
 			}

@@ -1,14 +1,13 @@
-//var $tableDefines = {};
+
 (function($) {
 
 	function SQLiteDao(tableName,identity,tableDefine) {
 		
-		//$tableDefines[tableName] = tableDefine;
 		this.init(tableName,identity,tableDefine);
 	}
 
 	SQLiteDao.prototype.init = function(tableName,identity,tableDefine) {
-		$database.transaction(
+		_SQLiteDb.transaction(
 			function( transaction ){
  
 				var createSql = "CREATE TABLE IF NOT EXISTS "+tableName+" (" +
@@ -36,9 +35,9 @@
 		return this._identity||"id";
 	}
 
-	SQLiteDao.prototype.get = function(tableName, opts) {
-		var obj;
-		$database.transaction(
+	SQLiteDao.prototype.get = function(tableName, id) {
+		var dfd = $.Deferred();
+		_SQLiteDb.transaction(
 				function( transaction ){
  
 					transaction.executeSql(
@@ -48,28 +47,26 @@
 							"FROM " +
 								tableName +
 							" where "+brite.dm.getIdName(tableName) +
-								"="+opts.id
+								"="+id
 						),
 						[],
 						function( transaction, results ){
-							if(results && results.rows && results.rows.length>0){
-								obj =results.rows.item( 0 ); 
+							dfd.resolve(results.rows.item( 0 )); 
 								
-							}
-							opts.callback(obj);
+							
 						}
 					);
  
 				}
 			);
-		return obj;
+		return dfd.promise();
 	}
 
 	SQLiteDao.prototype.list = function(tableName, opts) {
 		var resultSet ;
 
-		//$.Deferred(
-		$database.transaction(
+		var dfd = $.Deferred();
+		_SQLiteDb.transaction(
 				function( transaction ){
  					var selSql = "SELECT " +
 								"* " +
@@ -90,18 +87,15 @@
 						),
 						[],
 						function( transaction, results ){
-							//resultSet=results.rows;
-							if(opts){
-								opts.callback(results);
-							}
+							dfd.resolve(parseRows2Json(results.rows));
 							
 						}
 					);
 					
  
 				}
-			);//).promise();
-		return resultSet;
+			);
+		return dfd.promise();
 	}
 
 	SQLiteDao.prototype.create = function(tableName, data) {
@@ -126,7 +120,8 @@
 					values+
 				");";
 //				alert(insSql);
-		$database.transaction(
+		var dfd = $.Deferred();
+		_SQLiteDb.transaction(
 			function( transaction ){
 	
 				transaction.executeSql(
@@ -136,15 +131,11 @@
 					valus
 					,
 					function( transaction, results ){
-						// Execute the success callback,
-						// passing back the newly created ID.
-						//callback( results.insertId );
-						newId=results.insertId;
-						//data[this.getIdName(tableName)]=results.insertId;
+						dfd.resolve(results.insertId);
 					}
 				);
 		});
-		return newId;
+		return dfd.promise();
 	}
 
 	SQLiteDao.prototype.update = function(objectType, id, data) {
@@ -160,8 +151,9 @@
 	      } 
 			
 		uptSql+=" where "+brite.dm.getIdName(tableName)+"="+id;
-		alert(uptSql);
-		$database.transaction(
+//		alert(uptSql);
+		var dfd = $.Deferred();
+		_SQLiteDb.transaction(
 			function( transaction ){
 				transaction.executeSql(
 					(
@@ -170,25 +162,21 @@
 					[]
 					,
 					function( transaction, results ){
-						// Execute the success callback,
-						// passing back the newly created ID.
-						//callback( results.insertId );
-						data[brite.dm.getIdName(tableName)]=id;
+						dfd.resolve();
 					}
 				);
 		});
-		return data;	
+		return dfd.promise();	
 	}
 
 	SQLiteDao.prototype.remove = function(tableName, filter) {
-		
-		$database.transaction(
+		var dfd = $.Deferred();
+		_SQLiteDb.transaction(
 				function( transaction ){
  
 					var delSql = "DELETE FROM " +tableName +" where 1=1 ";
 					if(filter){
 						for(var k in filter){
-							if(k=="callback")continue;
 							delSql+=" and "+k+"='"+filter[k]+"'";
 						}
 					}
@@ -200,14 +188,13 @@
 						[]
 						,
 						function(transaction, results){
-							if(filter && filter.callback){
-								filter.callback();
-							}
+							dfd.resolve();
 						}
 					);
  
 				}
-			);
+			);	
+			return dfd.promise();
 
 	}
 	brite.dao.SQLiteDao = SQLiteDao;

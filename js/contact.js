@@ -1,4 +1,4 @@
-var $database;
+var _SQLiteDb;
 var daoCallBackEventListeners = {};
 $(function(){
 	// sqlit database connection
@@ -8,7 +8,7 @@ $(function(){
 			displayName: "SQLite Contact Test",
 			maxSize: 1024
 		};
-	$database = openDatabase(
+	_SQLiteDb = openDatabase(
 			databaseOptions.fileName,
 			databaseOptions.version,
 			databaseOptions.displayName,
@@ -19,20 +19,38 @@ $(function(){
 	brite.registerDao("Users",new brite.dao.SQLiteDao("Users","id",[{column:'name',dtype:'TEXT'},{column:'email',dtype:'TEXT'},{column:'pno',dtype:'TEXT'}]));	
 	brite.registerDao("GroupUser",new brite.dao.SQLiteDao("GroupUser","id",[{column:'group_id',dtype:'INTEGER'},{column:'user_id',dtype:'INTEGER'}]));
 	
-//	addDaoCallBackEventListener("Users_list",function(result){
-//		
-//		brite.display('UserComponent',result.rows);
-//	});
-//	addDaoCallBackEventListener("Groups_list",function(result){
-//		brite.display('GroupComponent',groupList);	
-//	});
-	
-		
-	brite.dm.remove("Users");
 
+	
+	
+	
+	
+
+	
+	initContactListDiv();
+	
+	brite.addDataChangeListener("Users",function(daoChangeEvent){
+			refreshUserListDiv();
+	});
+	brite.addDataChangeListener("Groups",function(daoChangeEvent){
+			refreshGroupListDiv();
+	});
+	
+	$('#initdb').click(function(){
+		initData();
+	});
+	
+	
+	
+
+});
+function initData(){
+	$("#group_div_top").hide();
+	brite.dm.remove("Users");
 	brite.dm.remove("Groups");
 	
 	brite.dm.remove("GroupUser");
+	
+	
 	
 	brite.dm.create("Users",{email:"001@a.com",name:"Mike1",pno:"123456"});
 	brite.dm.create("Users",{email:"002@a.com",name:"Mike2",pno:"123456"});
@@ -43,68 +61,48 @@ $(function(){
 	
 	brite.dm.create("Groups",{name:"group1"});
 	brite.dm.create("Groups",{name:"group2"});
-	
-	
-	
-	initContactListDiv();
-					
-	brite.addDataChangeListener("Users",function(daoChangeEvent){
-			refreshUserListDiv();
-	});
-	brite.addDataChangeListener("Groups",function(daoChangeEvent){
-			refreshGroupListDiv();
-	});
-//	brite.addDataChangeListener("GroupUser",function(daoChangeEvent){
-//			initContactListDiv();
-//	});
-	
-	
-	
-
-});
+}
 function parseRows2Json(rows){
 	var json = [];
 	var rlen = rows.length;
 	for(var i=0;i<rlen;i++){
-		json[i] = rows.item(i);
+		json.push(rows.item(i));
 	}
 	return json;
 }
 //  --reload user list --//
 function refreshUserListDiv(){
-	$userList = $("#user_div");
-	$userList.empty();
-	brite.dm.list("Users",{callback:function(results){
-		
-			brite.display('UserComponent',parseRows2Json(results.rows));
-		}});
+	
+//	alert(1);
+	brite.dm.list("Users").done(function(results){
+		$("#user_div").empty();
+		brite.display('UserComponent',results);
+	});
 }
 //-- reload group list--//
 function refreshGroupListDiv(){
-	$("#group_div").empty();
-	brite.dm.list("Groups",{callback:function(results){
-			brite.display('GroupComponent',parseRows2Json(results.rows));	
-		}});
+	
+	brite.dm.list("Groups").done(function(results){
+		$("#group_div").empty();
+		brite.display('GroupComponent',results);	
+	});
 	
 }
 //-- init page--//
 function initContactListDiv(){
+	initData();
 	refreshUserListDiv();
-	refreshGroupListDiv();
+	//refreshGroupListDiv();
 	
 }
 
 //  -----open group div ,set the checked status if the group was selected--//
 function addGroupToUser(id){
-	brite.dm.get("Users",{id:id,callback:function(user){
-		
-		
+	brite.dm.get("Users",id).done(function(user){
 		$('#selectedUname').html(user.name);
 		$('#selectedUid').val(user.id);
-		brite.dm.list("GroupUser",{matchs:{user_id:id},callback:function(uresults){
-			var userGroupList = parseRows2Json(uresults.rows);
-			brite.dm.list("Groups",{callback:function(results){
-				var groupList = parseRows2Json(results.rows);
+		brite.dm.list("GroupUser",{matchs:{user_id:id}}).done(function(userGroupList){
+			brite.dm.list("Groups").done(function(groupList){
 				var glen = groupList.length;
 				for(var i=0;i<glen;i++){
 					
@@ -116,13 +114,10 @@ function addGroupToUser(id){
 					
 				}
 				$("#group_div").empty();
-				brite.display('GroupComponent',groupList);					
-			}});
-		}});
-		
-
-							
-	}});
+				brite.display('GroupComponent',groupList);	
+			});
+		});
+	});
 
 	$("#group_div_top").show();
 }
@@ -138,26 +133,7 @@ function isInGroupList(list,obj){
 	}
 	return false;
 }
-//function addDaoCallBackEventListener(objectType, listener) {
-//		var bindingId = brite.util.uuid();
-//		var listeners = daoCallBackEventListeners[objectType];
-//		if (!listeners) {
-//			listeners = {};
-//			daoCallBackEventListeners[objectType] = listeners;
-//		}
-//		listeners[bindingId] = listener;
-//		
-//		return bindingId;
-//	};
-//function callDaoCallBackEventListener(objectType,results) {
-//		var listeners = daoCallBackEventListeners[objectType];
-//
-//		if (listeners) {
-//			$.each(listeners,function(key,listener){
-//				listener(results);
-//			});
-//		}
-//	};
+
 
 function parseUser2Json(user,userGroups){
 	var userJson = {};
