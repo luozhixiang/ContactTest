@@ -1,0 +1,32 @@
+<script type="text/javascript">
+	brite.registerComponent("GroupDialogPrompt", {
+	    parent: "body"
+	},
+	function(){
+		return new briteTest.GroupDialogPrompt();
+	});
+</script>
+<script id="tmplGroupPromptContent" type="text/html">
+<div class="operateUser groupPrompt">
+  <div class="cz">
+  <input type="button" class="ok" value="OK">
+  <input type="button" class="dialogcancle" value="Cancle">
+  </div>
+  <div class="userList">
+    <div class="userTitle">
+      <span class="userNmae">GroupName</span>
+      <span class="userClass">&nbsp;</span>
+      <div class="clear"></div>
+    </div>
+    <div class="userContect">
+	  {{each groups}}
+      <div>
+        <span class="userNmae">${name}</span>
+        <span class="userClass"><input class='groupcheck' data-obj_id="${id}" ${chkflg} data-obj_name="${name}" type="checkbox"/></span>
+        <div class="clear"></div>
+      </div>
+	  {{/each}}
+    </div>
+  </div>
+</div>
+</script>

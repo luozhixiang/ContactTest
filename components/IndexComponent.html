@@ -1,0 +1,26 @@
+<script type="text/javascript">
+	brite.registerComponent("IndexComponent",
+		{
+			parent: "#locationMenu"
+		},
+		{
+			create: function(data){				
+				var $e = $($("#tmplIndexContent").render(data));
+				return $e;
+			},
+			postDisplay:function(data,config){
+				// --- Create Group --- //
+				$(".usermanager").click(function(){
+					refreshUserListDiv();
+				});
+				$(".groupmanager").click(function(){
+					refreshGroupListDiv();
+				});
+			}
+		});
+
+</script>
+<script id="tmplIndexContent" type="text/html">
+    <div class="lctMenu usermanager">UserManager</div>
+    <div class="lctMenu groupmanager">GroupManager</div>
+</script>

@@ -10,19 +10,29 @@
 <script type="text/javascript" src="js/brite.dm.js" ></script>
 <script type="text/javascript" src="js/brite.event.js" ></script>
 <script type="text/javascript" src="js/contact.js" ></script>
+<script type="text/javascript" src="js/GroupDialogPrompt.js"></script>
 <script type="text/javascript" src="js/dao/SQLiteDao.js" ></script>
 </head>
 <body>
-<input type="button" value="Init DB" id="initdb"><br/>
-<div class="tabct" id="user_div">
-
-</div>
+<!-- 
+<div class="tabct" id="user_div"></div>
 <div class="tabct" id="group_div_top" style="display:none">
 Please select groups for <span id="selectedUname"></span>
-  <input type="hidden" id="selectedUid"/>
+  <input type="hidden" id="selectedUid"/>  
 <div class="tabct" id="group_div" >
+</div>
+</div>
+ -->
+<div class="location">
+  <div class="locationAdd"> 
+	  <span>Location:</span>
+	  <span id="location-index">Index&gt;&gt;</span>
+	  <span id="location-user">UserManager&gt;&gt;</span>
+	  <span id="location-group">GroupManager&gt;&gt;</span>
+  </div>
+  <div id="locationMenu" class="locationMenu">
+  </div>
+</div>
 
-</div>
-</div>
 </body>
 </html>

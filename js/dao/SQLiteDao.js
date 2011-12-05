@@ -39,7 +39,6 @@
 		var dfd = $.Deferred();
 		_SQLiteDb.transaction(
 				function( transaction ){
- 
 					transaction.executeSql(
 						(
 							"SELECT " +
@@ -51,9 +50,8 @@
 						),
 						[],
 						function( transaction, results ){
-							dfd.resolve(results.rows.item( 0 )); 
-								
-							
+							var row = results.rows.item(0);
+							dfd.resolve(row); 			
 						}
 					);
  
@@ -138,7 +136,7 @@
 		return dfd.promise();
 	}
 
-	SQLiteDao.prototype.update = function(objectType, id, data) {
+	SQLiteDao.prototype.update = function(tableName, id, data) {
 		var uptSql = "UPDATE "+tableName+" set " ;
 		var idx = 0;
 		for (var k in data)  
@@ -162,7 +160,7 @@
 					[]
 					,
 					function( transaction, results ){
-						dfd.resolve();
+						dfd.resolve(id);
 					}
 				);
 		});

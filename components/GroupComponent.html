@@ -1,11 +1,10 @@
 <script type="text/javascript">
 	brite.registerComponent("GroupComponent",
 		{
-			parent: "#group_div"
+			parent: "#locationMenu"
 		},
 		{
-			create: function(data){
-				
+			create: function(data){				
 				var json = {};
 				json.groups = data;
 				var $e = $($("#tmplGroupContent").render(json));
@@ -13,14 +12,13 @@
 			},
 			postDisplay:function(data,config){
 				// --- Create Group --- //
-				$("#createGroupBtn").click(function(){
+				this.$element.delegate(".updateGroup","click",function(){
 					var groupJson = {};
-					groupJson.name=$('#gname').val();
+					groupJson.name=$('#groupNameInput').val();
 					brite.dm.create("Groups",groupJson);
-					
 				});
 				// --- delete Group --- //
-				$("#groupList").delegate(".delGroup","click",function(){
+				this.$element.delegate(".delGroup","click",function(){
 					var objRef = $(this).bObjRef("Groups");
 					if (objRef){
 						brite.dm.remove("Groups",{id:objRef.id}).done(function(){
@@ -28,58 +26,37 @@
 						});
 					}
 				});	
-				$("#saveGroup2UserBtn").click(function(){
-					var uid = $('#selectedUid').val();
-					brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
-						$('input[name=gchk]').each(function(i){
-							if($(this).is(":checked")){
-								var gid = $(this).val();
-								
-								brite.dm.create("GroupUser",{group_id:gid,user_id:uid});
-								
-							}
-						});
-						
-						//alert("success");
-						$("#group_div").html("<br/><br/><font color='red'>Sucess</font>");
-					});
-					
-				
-					
-				});
 			}
 		});
 
 </script>
 <script id="tmplGroupContent" type="text/html">
-Groups:<br>
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td>Name:</td>
-      <td><input type="text" id="gname"></td>
-    </tr>
-    <tr>
-      <td colspan="2"><input type="button" id="createGroupBtn" value="Create"></td>
-    </tr>
-  </table>
-  <br/>
-  
-  <br/>
- <table cellpadding="0" cellspacing="0" id="groupList">
-    <tr>
-      <td></td>
-      <td>Name</td>
-    </tr>
-    <tbody id="group_list_body_div">
-    {{each groups}}
-    <tr>
-	  <td><input type="checkbox" value="${id}" ${chkflg} name="gchk"></td>
-      <td>${name}</td>
-      <td data-obj_type="Groups" data-obj_id="${id}"><span class='delGroup'>x</span></td>
-    </tr>
-    {{/each}}
-    </tbody>
-  </table>
-  <input type="button" id="saveGroup2UserBtn" value="Save groups">
+<div class="operateUsers">
+  <div class="addName"> 
+    <span class="spName">GroupName:</span>
+    <input id='groupNameInput' type="text">
+    <br> 
+  </div>
+  <input type="button" value="AddGroup" class="addBut updateGroup">
+</div>
+
+<div class="operateUser">
+  <div class="userList">
+    <div class="userTitle"> 
+      <span class="userNmae">Name</span>
+      <span class="operate">&nbsp;</span>
+      <div class="clear"></div>
+    </div>
+    <div class="userContect">
+	 {{each groups}}
+      <div data-obj_type="Groups" data-obj_id="${id}" >
+		<span class="userNmae">${name}</span>
+		<span class="operate"><span class='delGroup'>X</span></span>
+        <div class="clear"></div>
+      </div>
+	{{/each}}
+    </div>
+  </div>
+</div>
 
 </script>

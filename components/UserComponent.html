@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	brite.registerComponent("UserComponent",
 		{
-			parent: "#user_div"
+			parent: "#locationMenu"
 		},
 		{
 			create: function(data){
@@ -12,21 +12,107 @@
 			},
 			postDisplay:function(data,config){
 					// --- Create User --- //
-					$("#createUserBtn").click(function(){
+					this.$element.find('.updateUser').click(function(){
 						var userJson = {};
-						userJson.name=$('#name').val();
-						userJson.email=$('#email').val();
-						userJson.pno=$('#pno').val();
-						brite.dm.create("Users",userJson);
-						$("#group_div_top").hide();
-						
-					});
+						userJson.name=$('#nameInput').val();
+						userJson.email=$('#emailInput').val();
+						userJson.pno=$('#phoneNumberInput').val();
+						var userid=$('#userhideid').val();
+						if(userid==""){
+							brite.dm.create("Users",userJson).done(function(uid){
+								var ids = $(".addUserGroupList").attr("groupids");
+								var groupids = ids && ids!=""? (ids+"").split(",") : [];
+								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
+									for(var k in groupids){
+										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
+									}		
+								});
+							});
+						}else{
+							brite.dm.update("Users",userid,userJson).done(function(uid){
+								var ids = $(".addUserGroupList").attr("groupids");
+								var groupids = ids && ids!=""? (ids+"").split(",") : [];
+								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
+									for(var k in groupids){
+										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
+									}		
+								});
+							});
+						}
+					});		
+								
+					this.$element.delegate(".addGroupToUser","click",function(){
+							var ids = $(".addUserGroupList").attr("groupids");
+							var groupids = ids && ids!=""? (ids+"").split(",") : []; 
+							brite.dm.list("Groups").done(function(groupList){
+								var glen = groupList.length;
+								for(var i=0;i<glen;i++){									
+									if(isInGroupArray(groupids,groupList[i])){
+										groupList[i].chkflg='checked';
+									}else{
+										groupList[i].chkflg='';
+									}									
+								}
+								$("#group_div").empty();
+								var dfd = brite.display('GroupDialogPrompt', groupList);						
+								dfd.done(function(dialog){
+									dialog.onAnswer(function(result){
+                                       if(result!=null){
+                                           var ids = "";
+                                           var groupnames="";
+                                           for(var k in result){
+                                        	   ids += (ids=="" ? result[k].id:","+result[k].id);
+                                        	   groupnames += (groupnames==""?result[k].name:","+result[k].name);
+                                           }
+                                           $(".addUserGroupList").html(groupnames);
+                                           $(".addUserGroupList").attr("groupids",ids);
+                                       }
+									});
+								})	
+							});
+	                });	
 					// --- delete User --- //
-					$("#userList").delegate(".delUser","click",function(){
+					this.$element.delegate(".delUser","click",function(){
 						var objRef = $(this).bObjRef("Users");
 						if (objRef){
-							brite.dm.remove("Users",{id:objRef.id}).done(function(){
-								$("#group_div_top").hide();
+							brite.dm.remove("Users",{id:objRef.id}).done(function(){});
+						}
+					});
+					
+					this.$element.delegate(".addNewUser","click",function(){
+						$(".updateUser").val("Add");
+						$('#userhideid').val("");
+						$('#nameInput').val("");
+						$('#emailInput').val("");
+						$('#phoneNumberInput').val("");
+                        $(".addUserGroupList").html("");
+                        $(".addUserGroupList").attr("groupids","");
+					});
+					
+					this.$element.delegate(".updateExistUser","click",function(){
+						var objRef = $(this).bObjRef("Users");
+						if (objRef){
+							brite.dm.get("Users",objRef.id).done(function(user){
+								brite.dm.list("GroupUser",{matchs:{user_id:objRef.id}}).done(function(userGroupList){
+									brite.dm.list("Groups").done(function(groupList){
+										var glen = groupList.length;
+										var gids = "";
+										var gnames = "";
+										for(var i=0;i<glen;i++){											
+											if(isInGroupList(userGroupList,groupList[i])){
+												gids+= gids==""?groupList[i].id:","+groupList[i].id;
+												gnames+= gnames==""?groupList[i].name:","+groupList[i].name;
+											}											
+										}
+										$(".updateUser").val("Update");
+										$('#userhideid').val(user.id);
+										$('#nameInput').val(user.name);
+										$('#emailInput').val(user.email);
+										$('#phoneNumberInput').val(user.pno);
+                                        $(".addUserGroupList").html(gnames);
+                                        $(".addUserGroupList").attr("groupids",gids);
+									});
+								});    
 							});
 						}
 					});
@@ -35,43 +121,53 @@
 		
 </script>
 <script id="tmplUserContent" type="text/html">
-Users:<br>
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td>Name:</td>
-      <td><input type="text" id="name"></td>
-    </tr>
-    <tr>
-      <td>Email:</td>
-      <td><input type="text" id="email"></td>
-    </tr>
-    <tr>
-      <td>PhoneNumber:</td>
-      <td><input type="text" id="pno"></td>
-    </tr>
-    <tr>
-      <td colspan="2"><input type="button" id="createUserBtn" value="Create"></td>
-    </tr>
-  </table>
- <table cellpadding="0" cellspacing="0" id="userList">
-    <tr>
-      <td></td>
-      <td>Name</td>
-      <td>Email</td>
-      <td>PhoneNumber</td>
-      <td></td>
-    </tr>
-    <tbody id="user_list_body_div">
-    {{each userLlist}}
-    <tr>
-	  <td  data-obj_type="Users" data-obj_id="${id}"><span class='delUser'>x</span></td>
-      <td>${name}</td>
-      <td>${email}</td>
-      <td>${pno}</td>
-      <td><input type="button" onclick="addGroupToUser('${id}')" value="Add Group"></td>
-    </tr>
-    {{/each}}
-    </tbody>
-  </table>
+
+<div class="operateUsers">
+  <div class="addName"> 
+    <span class="spName">Name:</span>
+    <input id='nameInput' type="text">
+    <input id='userhideid' value="" type="hidden">
+    <br>
+    <span class="spName">Email:</span>
+    <input id='emailInput' type="text">
+    <br>
+   <span class="spName">PhoneNumber:</span>
+    <input id='phoneNumberInput' type="text">
+    <br>
+   <span class="spName">Groups:</span>
+    <input value='addGroupToUser' type='button' class='addGroupToUser'/>
+    <br>
+    <span class="spName">&nbsp;</span>
+    <div class='addUserGroupList'></div>
+   
+  </div>
+  <input type="button" value="Add" class="addBut updateUser">
+</div>
+
+<div class="operateUser">
+  <div class="cz">
+  	<input type="button" class="addNewUser" value="addNewUser">
+  </div>
+  <div class="userList">
+    <div class="userTitle"> 
+      <span class="userNmae">Name</span>
+      <span class="userClass">Email</span>
+      <span class="userClass">PhoneNumber</span>
+      <span class="operate">&nbsp;</span>
+      <div class="clear"></div>
+    </div>
+    <div class="userContect">
+	 {{each userLlist}}
+      <div data-obj_type="Users" data-obj_id="${id}" >
+		<span class="userNmae userNameC">${name}</span>
+		<span class="userClass">${email}</span>
+		<span class="userClass">${pno}</span>
+		<span class="operate"><span class='delUser'>X</span><span>&nbsp;</span><span class='updateExistUser'>update</span></span>
+        <div class="clear"></div>
+      </div>
+	{{/each}}
+    </div>
+  </div>
+</div>
 
 </script>
