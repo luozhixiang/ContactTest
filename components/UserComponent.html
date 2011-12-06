@@ -11,17 +11,18 @@
 				return $e;
 			},
 			postDisplay:function(data,config){
+				    
+				    this.$element.find(".addUserGroupList").data("groupids",[]);
 					// --- Create User --- //
 					this.$element.find('.updateUser').click(function(){
 						var userJson = {};
 						userJson.name=$('#nameInput').val();
 						userJson.email=$('#emailInput').val();
 						userJson.pno=$('#phoneNumberInput').val();
-						var userid=$('#userhideid').val();
+						var userid=$('#useridInput').val();
 						if(userid==""){
 							brite.dm.create("Users",userJson).done(function(uid){
-								var ids = $(".addUserGroupList").attr("groupids");
-								var groupids = ids && ids!=""? (ids+"").split(",") : [];
+								var groupids = $(".addUserGroupList").data("groupids");
 								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
 									for(var k in groupids){
 										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
@@ -30,8 +31,7 @@
 							});
 						}else{
 							brite.dm.update("Users",userid,userJson).done(function(uid){
-								var ids = $(".addUserGroupList").attr("groupids");
-								var groupids = ids && ids!=""? (ids+"").split(",") : [];
+								var groupids = $(".addUserGroupList").data("groupids");
 								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
 									for(var k in groupids){
 										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
@@ -42,33 +42,28 @@
 					});		
 								
 					this.$element.delegate(".addGroupToUser","click",function(){
-							var ids = $(".addUserGroupList").attr("groupids");
-							var groupids = ids && ids!=""? (ids+"").split(",") : []; 
+							var groupids = $(".addUserGroupList").data("groupids");
 							brite.dm.list("Groups").done(function(groupList){
-								var glen = groupList.length;
-								for(var i=0;i<glen;i++){									
-									if(isInGroupArray(groupids,groupList[i])){
-										groupList[i].chkflg='checked';
-									}else{
-										groupList[i].chkflg='';
+								for(var k in groupList){									
+									if(isInGroupArray(groupids,groupList[k])){
+										groupList[k].chkflg='checked';
 									}									
 								}
-								$("#group_div").empty();
 								var dfd = brite.display('GroupDialogPrompt', groupList);						
 								dfd.done(function(dialog){
 									dialog.onAnswer(function(result){
                                        if(result!=null){
-                                           var ids = "";
+                                           var gids = [];
                                            var groupnames="";
                                            for(var k in result){
-                                        	   ids += (ids=="" ? result[k].id:","+result[k].id);
+                                        	   gids.push(result[k].id);
                                         	   groupnames += (groupnames==""?result[k].name:","+result[k].name);
                                            }
                                            $(".addUserGroupList").html(groupnames);
-                                           $(".addUserGroupList").attr("groupids",ids);
+                                           $(".addUserGroupList").data("groupids",gids);
                                        }
 									});
-								})	
+								});	
 							});
 	                });	
 					// --- delete User --- //
@@ -81,12 +76,12 @@
 					
 					this.$element.delegate(".addNewUser","click",function(){
 						$(".updateUser").val("Add");
-						$('#userhideid').val("");
+						$('#useridInput').val("");
 						$('#nameInput').val("");
 						$('#emailInput').val("");
 						$('#phoneNumberInput').val("");
                         $(".addUserGroupList").html("");
-                        $(".addUserGroupList").attr("groupids","");
+                        $(".addUserGroupList").data("groupids",[]);
 					});
 					
 					this.$element.delegate(".updateExistUser","click",function(){
@@ -95,22 +90,21 @@
 							brite.dm.get("Users",objRef.id).done(function(user){
 								brite.dm.list("GroupUser",{matchs:{user_id:objRef.id}}).done(function(userGroupList){
 									brite.dm.list("Groups").done(function(groupList){
-										var glen = groupList.length;
-										var gids = "";
+										var gids = [];
 										var gnames = "";
-										for(var i=0;i<glen;i++){											
-											if(isInGroupList(userGroupList,groupList[i])){
-												gids+= gids==""?groupList[i].id:","+groupList[i].id;
-												gnames+= gnames==""?groupList[i].name:","+groupList[i].name;
+										for(var k in groupList){											
+											if(isInGroupList(userGroupList,groupList[k])){
+												gids.push(groupList[k].id);
+												gnames+= gnames==""?groupList[k].name:","+groupList[k].name;
 											}											
 										}
 										$(".updateUser").val("Update");
-										$('#userhideid').val(user.id);
+										$('#useridInput').val(user.id);
 										$('#nameInput').val(user.name);
 										$('#emailInput').val(user.email);
 										$('#phoneNumberInput').val(user.pno);
                                         $(".addUserGroupList").html(gnames);
-                                        $(".addUserGroupList").attr("groupids",gids);
+                                        $(".addUserGroupList").data("groupids",gids);
 									});
 								});    
 							});
@@ -123,23 +117,22 @@
 <script id="tmplUserContent" type="text/html">
 
 <div class="operateUsers">
-  <div class="addName"> 
-    <span class="spName">Name:</span>
+  <div class="userAddDiv"> 
+    <div><span class="userAddSpan">Name:&nbsp;</span>
     <input id='nameInput' type="text">
-    <input id='userhideid' value="" type="hidden">
-    <br>
-    <span class="spName">Email:</span>
+    <input id='useridInput' value="" type="hidden">
+    </div><div>
+    <span class="userAddSpan">Email:&nbsp;</span>
     <input id='emailInput' type="text">
-    <br>
-   <span class="spName">PhoneNumber:</span>
+    </div><div>
+   <span class="userAddSpan">PhoneNumber:&nbsp;</span>
     <input id='phoneNumberInput' type="text">
-    <br>
-   <span class="spName">Groups:</span>
-    <input value='addGroupToUser' type='button' class='addGroupToUser'/>
-    <br>
-    <span class="spName">&nbsp;</span>
-    <div class='addUserGroupList'></div>
-   
+    </div><div>
+   <span class="userAddSpan">Groups:&nbsp;</span>
+    <input value='Add Group' type='button' class='addButs addGroupToUser'/>
+    </div>
+    <span class="userAddSpan">&nbsp;</span>
+    <div class='addUserGroupList'></div>   
   </div>
   <input type="button" value="Add" class="addBut updateUser">
 </div>
@@ -150,19 +143,23 @@
   </div>
   <div class="userList">
     <div class="userTitle"> 
-      <span class="userNmae">Name</span>
-      <span class="userClass">Email</span>
-      <span class="userClass">PhoneNumber</span>
+      <span class="userNameSpan">Name</span>
+      <span class="userSpanClass">Email</span>
+      <span class="userSpanClass">PhoneNumber</span>
       <span class="operate">&nbsp;</span>
       <div class="clear"></div>
     </div>
-    <div class="userContect">
+    <div class="userContent">
 	 {{each userLlist}}
       <div data-obj_type="Users" data-obj_id="${id}" >
-		<span class="userNmae userNameC">${name}</span>
-		<span class="userClass">${email}</span>
-		<span class="userClass">${pno}</span>
-		<span class="operate"><span class='delUser'>X</span><span>&nbsp;</span><span class='updateExistUser'>update</span></span>
+		<span class="userNameSpan">${name}</span>
+		<span class="userSpanClass">${email}</span>
+		<span class="userSpanClass">${pno}</span>
+		<span class="operate">
+			<span class='delUser'>X</span>
+			<span>&nbsp;</span>
+			<span class='updateExistUser'>update</span>
+		</span>
         <div class="clear"></div>
       </div>
 	{{/each}}

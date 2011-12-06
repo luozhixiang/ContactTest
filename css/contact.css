@@ -3,52 +3,47 @@
 	padding: 0
 }
 
-.userList {
-	width: 98%;
-	height: auto;
-	margin: 5px auto;
-	margin-bottom: 10px;
-	overflow: auto;
+html {
+	height: 100%;
 }
 
-.userContect>div {
+body {
+	height: 100%;
+}
+
+.cz {
 	width: 100%;
-	border-bottom: 1px dashed #ccc
+	height: 38px;
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #09101c),
+		color-stop(0.5, #09101d), color-stop(0.51, #222c3d),
+		color-stop(1, #5a6171) );
 }
 
 .cz input {
 	height: 24px;
 	padding: 0 5px;
-	border: 1px solid #b6b6b6;
-	border-radius: 3px;
+	border: 1px solid #283043;
+	border-radius: 4px;
 	-moz-border-radius: 3px;
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc),
-		color-stop(0.5, #ccc), color-stop(0.51, #ddd), color-stop(1, #ddd) );
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #edeff3),
+		color-stop(0.5, #edeff3), color-stop(0.51, #ffffff),
+		color-stop(1, #ffffff) );
 	color: #333;
-	margin-top: 10px;
+	margin-top: 8px;
 	margin-left: 10px;
 	cursor: pointer;
-	box-shadow: 2px 2px 1px #ccc;
-	font-size: 12px
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+	font-size: 12px;
+	box-shadow: 0px 1px 1px #646e79
 }
 
 .cz input:hover {
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #b9b9b9),
-		color-stop(0.5, #ccc), color-stop(0.51, #ccc), color-stop(1, #b9b9b9)
-		);
-}
-
-.userTitle span,.userContect span {
-	display: block;
-	float: left
-}
-
-.userNmae,.userClass {
-	width: 30%
-}
-
-.operate {
-	width: 10%
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #1e4ee1),
+		color-stop(0.5, #1e4ee1), color-stop(0.51, #416ae5),
+		color-stop(1, #7c98ed) );
+	color: #eee;
+	text-shadow: 2px 2px 2px #838896
 }
 
 .clear {
@@ -56,56 +51,6 @@
 	line-height: 0;
 	height: 0;
 	overflow: hidden
-}
-
-.userTitle {
-	border-bottom: 1px solid #ccc;
-	font-weight: bold;
-}
-
-.userContect a {
-	color: #333
-}
-
-.operateUser,.operateUsers {
-	width: 700px;
-	height: auto;
-	overflow: hidden;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	margin: 20px auto;
-	border: 1px solid #ccc;
-	box-shadow: 1px 1px 1px #ccc;
-	font-size: 12px;
-	line-height: 24px;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff),
-		to(#f8f8f8) );
-	color: #333
-}
-
-.operateUsers {
-	width: 300px
-}
-
-.addName {
-	width: 280px;
-	margin: 10px auto;
-	height: auto;
-	overflow: auto;
-	margin-top: 13px
-}
-
-.addName span.spName {
-	width: 80px;
-	text-align: right;
-	display: block;
-	float: left;
-}
-
-.addName input {
-	width: 180px;
-	float: left;
-	height: 18px
 }
 
 .addBut {
@@ -120,76 +65,383 @@
 	margin-left: 10px;
 	cursor: pointer;
 	box-shadow: 2px 2px 1px #ccc;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
 	font-size: 12px;
 	float: right;
-	margin: 0 27px 10px 0
+	margin: 0 230px 10px 0
 }
-
-.location {
-	width: 98%;
-	height: auto;
-	overflow: hidden;
-	border: 1px solid #999;
-	margin: 10px auto;
-	font-size: 12px;
-	border-radius: 3px
-}
-
-.locationAdd {
-	width: 100%;
-	height: 30px;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#ddd),
-		to(#c4c4c4) );
-	border-bottom: 1px solid #a2a2a2;
-	line-height: 30px
-}
-
-.lctMenu {
-	width: 160px;
-	height: 80px;
-	border: 1px solid #aaa;
-	border-radius: 5px;
-	float: left;
-	margin-left: 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff),
-		to(#dedede) );
-	text-align: center;
-	line-height: 80px;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: bold;
-	color: #5b8aac;
-	box-shadow: 1px 1px 1px #ccc;
-}
-
-.locationAdd span {
-	padding: 0 10px;
-	cursor: pointer;
-	display: block;
-	float: left;
-	height: 30px;
-	color: #444;
-	font-weight: bold
-}
-
-input.addGroupToUser {
-	padding: 0 5px;
+.addButs {
+	height: 24px;
+	padding: 0 15px;
 	border: 1px solid #b6b6b6;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc),
 		color-stop(0.5, #ccc), color-stop(0.51, #ddd), color-stop(1, #ddd) );
 	color: #333;
+	margin-left: 10px;
 	cursor: pointer;
 	box-shadow: 2px 2px 1px #ccc;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
 	font-size: 12px;
-	width: 90px;
+}
+.addButt {
+	height: 24px;
+	padding: 0 15px;
+	border: 1px solid #b6b6b6;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc),
+		color-stop(0.5, #ccc), color-stop(0.51, #ddd), color-stop(1, #ddd) );
+	color: #333;
+	margin-left: 10px;
+	cursor: pointer;
+	box-shadow: 2px 2px 1px #ccc;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+	font-size: 12px;
+	float:right;
+	margin-right:126px;
+	margin-bottom:10px
+}
+.addBut:hover {
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #1e4ee1),
+		color-stop(0.5, #1e4ee1), color-stop(0.51, #416ae5),
+		color-stop(1, #7c98ed) );
+	color: #eee;
 }
 
-.groupPrompt {
+/***********IndexComponent---start********************/
+.location {
+	width:98%;
+	height:auto;
+	overflow:hidden;
+	border:1px solid #000;
+	margin:10px auto;
+	font-size:12px;
+	border-radius:5px;
+	background:#0b1018;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+}
+
+.location .locationBar {
+	width:100%;
+	height:30px;
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #09101c), color-stop(0.5, #09101d), color-stop(0.51, #222c3d), color-stop(1, #5a6171));
+	line-height:30px;
+	color:#eee
+}
+.location .locationBar span {
+	padding:0 10px;
+	cursor:pointer;
+	display:block;
+	float:left;
+	height:30px;
+	color:#eee;
+	font-weight:bold
+}
+
+.location .locationMenu {
+	background:#fff;
+	width:99%;
+	height:auto;
+	overflow:hidden;
+	margin:0 auto 10px auto;
+	border-radius:5px
+}
+
+.location .locationMenu .lctMenu {
+	width:160px;
+	height:80px;
+	border:1px solid #131e3b;
+	border-radius:5px;
+	float:left;
+	margin-left:20px;
+	margin-top:20px;
+	margin-bottom:20px;
+	text-align:center;
+	line-height:80px;
+	cursor:pointer;
+	font-size:14px;
+	font-weight:bold;
+	color:#eee;
+	box-shadow:1px 1px 1px #ccc;
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #232f4e), color-stop(0.5, #162344), color-stop(0.51, #343f5c), color-stop(1, #757d90));
+	text-shadow:1px 1px 1px #000
+}
+/***********IndexComponent---end********************/
+
+/***********UserComponent---start********************/
+.operateUsers {
+	width: 700px;
+	height: auto;
+	overflow: hidden;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin: 20px auto;
+	border: 1px solid #ccc;
+	box-shadow: 1px 1px 1px #ccc;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+	font-size: 12px;
+	line-height: 24px;
+	color: #333
+}
+
+.operateUsers .userAddDiv {
+	width: 480px;
+	margin: 10px auto;
+	height: auto;
+	overflow: auto;
+	margin-top: 13px
+}
+.userAddDiv div{ width:100%;height:auto;overflow:hidden;margin-top:10px}
+.operateUsers .userAddDiv span.userAddSpan {
+	width: 180px;
+	text-align: right;
+	display: block;
+	float: left;
+}
+
+.operateUsers .userAddDiv input {
+	width: 180px;
+	float: left;
+	height: 18px
+}
+
+.operateUsers .userAddDiv input.addGroupToUser {
+	width: 90px;
+	float: left;
+	height: 20px
+}
+
+.operateUsers .userAddDiv .addUserGroupList {
+	width: 180px;
+	float: left;
+	height: 30px
+}
+
+.operateUser {
+	width: 700px;
+	height: auto;
+	overflow: hidden;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin: 20px auto;
+	border: 1px solid #000000;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 12px;
+	line-height: 24px;
+	background: #0b1018
+}
+
+.operateUser .userList {
+	width: 680px;
+	height: auto;
+	margin: 5px auto;
+	margin-bottom: 10px;
+	overflow: auto;
+	border-bottom: 1px solid #e6e7eb;
+	background: #dcdfe5;
+	border-radius: 5px;
+	padding: 5px
+}
+
+.operateUser .userTitle {
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+}
+
+.operateUser .userTitle span {
+	display: block;
+	float: left
+}
+
+.operateUser .userContect span {
+	display: block;
+	float: left
+}
+
+.operateUser .userNameSpan {
+	float:left;
+	width: 20%;
+}
+
+.operateUser .userSpanClass {
+	float:left;
+	width: 30%;
+}
+
+.operateUser .operate {
+	float:left;
+	width: 20%;
+	text-align: center
+}
+
+.operateUser .delUser{
+	cursor: pointer;
+}
+
+.operateUser .userContent>div {
+	width: 100%;
+	border-bottom: 1px solid #d3d5d9;
+	border-top: 1px solid #e6e7eb
+}
+
+.operateUser .updateExistUser {
+	cursor: pointer;
+}
+
+.operateUser .delUser {
+	cursor: pointer;
+}
+/***********UserComponent---end********************/
+
+/***********GroupComponent---start********************/
+.operateGroups {
+	width: 500px;
+	height: auto;
+	overflow: hidden;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin: 20px auto;
+	border: 1px solid #ccc;
+	box-shadow: 1px 1px 1px #ccc;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+	font-size: 12px;
+	line-height: 24px;
+	color: #333
+}
+
+.operateGroups .groupAddDiv {
+	width: 280px;
+	margin: 10px auto;
+	height: auto;
+	overflow: auto;
+	margin-top: 13px
+}
+
+.operateGroups .groupAddDiv span.groupAddSpan {
+	width: 80px;
+	text-align: right;
+	display: block;
+	float: left;
+}
+
+.operateGroups .groupAddDiv input {
+	width: 180px;
+	float: left;
+	height: 18px
+}
+
+.operateGroup {
+	width: 500px;
+	height: auto;
+	overflow: hidden;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin: 20px auto;
+	border: 1px solid #000000;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+	font-size: 12px;
+	line-height: 24px;
+	background: #0b1018
+}
+
+.operateGroup .groupList {
+	width: 480px;
+	height: auto;
+	margin: 5px auto;
+	margin-bottom: 5px;
+	overflow: auto;
+	border-bottom: 1px solid #e6e7eb;
+	background: #dcdfe5;
+	border-radius: 5px;
+	padding: 5px
+}
+
+.operateGroup .groupTitle {
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+}
+
+.operateGroup .groupNameSpan {
+	float:left;
+	width: 70%;
+}
+
+.operateGroup .operate {
+	float:left;
+	width: 30%;
+	text-align: center
+}
+
+.operateGroup .groupContent>div {
+	width: 100%;
+	border-bottom: 1px solid #d3d5d9;
+	border-top: 1px solid #e6e7eb
+}
+
+.operateGroup .delGroup{
+	cursor: pointer;
+}
+/***********GroupComponent---end********************/
+
+/***********GroupDialogPrompt---start********************/
+.operateGroupPrompt {
+	width: 500px;
+	height: auto;
+	overflow: hidden;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin: 20px auto;
+	border: 1px solid #000000;
+	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
+		sans-serif;
+	font-size: 12px;
+	line-height: 24px;
+	background: #0b1018;
 	position: absolute;
 	top: 50px;
-	left: 20%;
+	left: 30%;
 }
+
+.operateGroupPrompt .groupPromptList {
+	width: 480px;
+	height: auto;
+	margin: 5px auto;
+	margin-bottom: 10px;
+	overflow: auto;
+	border-bottom: 1px solid #e6e7eb;
+	background: #dcdfe5;
+	border-radius: 5px;
+	padding: 5px
+}
+
+.operateGroupPrompt .groupPromtTitle {
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+}
+
+.operateGroupPrompt .groupPromtName {
+	float:left;
+	width: 70%;
+}
+
+.operateGroupPrompt .operate {
+	float:left;
+	width: 30%;
+	text-align: center
+}
+.operateGroupPrompt .groupPromtContent>div {
+	width: 100%;
+	border-bottom: 1px solid #d3d5d9;
+	border-top: 1px solid #e6e7eb
+}
+/***********GroupDialogPrompt---end********************/
+

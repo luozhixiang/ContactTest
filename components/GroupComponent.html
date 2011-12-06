@@ -12,7 +12,7 @@
 			},
 			postDisplay:function(data,config){
 				// --- Create Group --- //
-				this.$element.delegate(".updateGroup","click",function(){
+				this.$element.delegate(".addOrUpdateGroup","click",function(){
 					var groupJson = {};
 					groupJson.name=$('#groupNameInput').val();
 					brite.dm.create("Groups",groupJson);
@@ -31,26 +31,26 @@
 
 </script>
 <script id="tmplGroupContent" type="text/html">
-<div class="operateUsers">
-  <div class="addName"> 
-    <span class="spName">GroupName:</span>
+<div class="operateGroups">
+  <div class="groupAddDiv"> 
+    <span class="groupAddSpan">GroupName:</span>
     <input id='groupNameInput' type="text">
     <br> 
   </div>
-  <input type="button" value="AddGroup" class="addBut updateGroup">
+  <input type="button" value="Add" class="addButt addOrUpdateGroup">
 </div>
 
-<div class="operateUser">
-  <div class="userList">
-    <div class="userTitle"> 
-      <span class="userNmae">Name</span>
+<div class="operateGroup">
+  <div class="groupList">
+    <div class="groupTitle"> 
+      <span class="groupNameSpan">Name</span>
       <span class="operate">&nbsp;</span>
       <div class="clear"></div>
     </div>
-    <div class="userContect">
+    <div class="groupContent">
 	 {{each groups}}
       <div data-obj_type="Groups" data-obj_id="${id}" >
-		<span class="userNmae">${name}</span>
+		<span class="groupNameSpan">${name}</span>
 		<span class="operate"><span class='delGroup'>X</span></span>
         <div class="clear"></div>
       </div>
