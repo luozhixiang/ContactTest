@@ -1,7 +1,8 @@
 <script type="text/javascript">
+    
 	brite.registerComponent("UserComponent",
 		{
-			parent: "#locationMenu"
+			parent: "#locationMenuRt"
 		},
 		{
 			create: function(data){
@@ -11,7 +12,14 @@
 				return $e;
 			},
 			postDisplay:function(data,config){
-				    
+                    var $e = this.$element;
+                    for(var u in data ) {
+                    	getUserAndGroups(data[u]).done(function(user){
+            				var $tr = $("#tmplUserContent-tr").render(user);
+            				$e.find(".userContent").append($tr);
+                        });
+                    }
+			    
 				    this.$element.find(".addUserGroupList").data("groupids",[]);
 					// --- Create User --- //
 					this.$element.find('.updateUser').click(function(){
@@ -20,9 +28,9 @@
 						userJson.email=$('#emailInput').val();
 						userJson.pno=$('#phoneNumberInput').val();
 						var userid=$('#useridInput').val();
+						var groupids = $(".addUserGroupList").data("groupids");
 						if(userid==""){
 							brite.dm.create("Users",userJson).done(function(uid){
-								var groupids = $(".addUserGroupList").data("groupids");
 								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
 									for(var k in groupids){
 										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
@@ -31,7 +39,6 @@
 							});
 						}else{
 							brite.dm.update("Users",userid,userJson).done(function(uid){
-								var groupids = $(".addUserGroupList").data("groupids");
 								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
 									for(var k in groupids){
 										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
@@ -82,6 +89,7 @@
 						$('#phoneNumberInput').val("");
                         $(".addUserGroupList").html("");
                         $(".addUserGroupList").data("groupids",[]);
+                        $(".operateUsers").show();
 					});
 					
 					this.$element.delegate(".updateExistUser","click",function(){
@@ -98,6 +106,7 @@
 												gnames+= gnames==""?groupList[k].name:","+groupList[k].name;
 											}											
 										}
+										$(".operateUsers").show();
 										$(".updateUser").val("Update");
 										$('#useridInput').val(user.id);
 										$('#nameInput').val(user.name);
@@ -115,26 +124,29 @@
 		
 </script>
 <script id="tmplUserContent" type="text/html">
-
 <div class="operateUsers">
-  <div class="userAddDiv"> 
-    <div><span class="userAddSpan">Name:&nbsp;</span>
-    <input id='nameInput' type="text">
-    <input id='useridInput' value="" type="hidden">
-    </div><div>
-    <span class="userAddSpan">Email:&nbsp;</span>
-    <input id='emailInput' type="text">
-    </div><div>
-   <span class="userAddSpan">PhoneNumber:&nbsp;</span>
-    <input id='phoneNumberInput' type="text">
-    </div><div>
-   <span class="userAddSpan">Groups:&nbsp;</span>
-    <input value='Add Group' type='button' class='addButs addGroupToUser'/>
-    </div>
-    <span class="userAddSpan">&nbsp;</span>
-    <div class='addUserGroupList'></div>   
-  </div>
-  <input type="button" value="Add" class="addBut updateUser">
+     <div class="groupTit"></div>
+     <div class="userAddDiv"> 
+		    <span class="userAddSpan">Name:&nbsp;</span>
+    		<input id='nameInput' type="text">
+    		<input id='useridInput' value="" type="hidden">
+            <br>
+    		<span class="userAddSpan">Email:&nbsp;</span>
+    		<input id='emailInput' type="text">
+            <br>
+   			<span class="userAddSpan">PhoneNumber:&nbsp;</span>
+    		<input id='phoneNumberInput' type="text">
+          	<br>
+   			<span class="userAddSpan">Groups:&nbsp;</span>
+    		<input value='Add Group' type='button' class='addButs addGroupToUser'/>
+          	<br>
+    		<span class="userAddSpan">&nbsp;</span>
+    		<div class='addUserGroupList'></div> 
+     </div>
+     <div class="subbut">
+  		 <input type="button" value="Add" class="addBut updateUser">
+ 		 <input type="button" value="Cancle" class="addBut">
+     </div>
 </div>
 
 <div class="operateUser">
@@ -146,15 +158,22 @@
       <span class="userNameSpan">Name</span>
       <span class="userSpanClass">Email</span>
       <span class="userSpanClass">PhoneNumber</span>
+      <span class="userSpanClass">Groups</span>
       <span class="operate">&nbsp;</span>
       <div class="clear"></div>
     </div>
     <div class="userContent">
-	 {{each userLlist}}
+    </div>
+  </div>
+</div>
+</script>
+
+<script id="tmplUserContent-tr" type="text/html">
       <div data-obj_type="Users" data-obj_id="${id}" >
 		<span class="userNameSpan">${name}</span>
 		<span class="userSpanClass">${email}</span>
 		<span class="userSpanClass">${pno}</span>
+		<span class="userSpanClass">${groups}</span>
 		<span class="operate">
 			<span class='delUser'>X</span>
 			<span>&nbsp;</span>
@@ -162,9 +181,5 @@
 		</span>
         <div class="clear"></div>
       </div>
-	{{/each}}
-    </div>
-  </div>
-</div>
-
 </script>
+

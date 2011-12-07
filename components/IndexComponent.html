@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	brite.registerComponent("IndexComponent",
 		{
-			parent: "#locationMenu"
+			parent: "#locationMenuRt"
 		},
 		{
 			create: function(data){				
@@ -11,6 +11,7 @@
 			postDisplay:function(data,config){
 				// --- Create Group --- //
 				$(".usermanager").click(function(){
+					refreshUserGroupListDiv();
 					refreshUserListDiv();
 				});
 				$(".groupmanager").click(function(){

@@ -58,14 +58,29 @@ function parseRows2Json(rows){
 	return json;
 }
 //  --reload user list --//
-function refreshUserListDiv(){
-	brite.dm.list("Users").done(function(results){
-		$("#location-index").show();
-		$("#location-user").show();
-		$("#location-group").hide();
-		$("#locationMenu").empty();
-		brite.display('UserComponent',results);
-	});
+function refreshUserListDiv(groupid){
+	$('body').data('groupid',groupid);
+	$("#location-index").show();
+	$("#location-user").show();
+	$("#location-group").hide();
+	$("#locationMenuRt").empty();
+	if(groupid){
+		brite.dm.list("GroupUser",{matchs:{group_id:groupid}}).done(function(userGroupList){
+			brite.dm.list("Users").done(function(userList){
+                var users = [];
+				for(var k in userList){											
+					if(isInUserList(userGroupList,userList[k])){
+						users.push(userList[k]);
+					}											
+				}
+				brite.display('UserComponent',users);
+			});		
+		});
+	}else{
+		brite.dm.list("Users").done(function(results){
+			brite.display('UserComponent',results);
+		});
+	}
 }
 //-- reload group list--//
 function refreshGroupListDiv(){	
@@ -73,8 +88,15 @@ function refreshGroupListDiv(){
 		$("#location-index").show();
 		$("#location-user").hide();
 		$("#location-group").show();
-		$("#locationMenu").empty();
+		$("#locationMenuRt").empty();
 		brite.display('GroupComponent',results);	
+	});
+}
+
+function refreshUserGroupListDiv(){	
+	brite.dm.list("Groups").done(function(results){
+		$("#locationMenuLt").empty();
+		brite.display('GroupUserComponent',results);	
 	});
 	
 }
@@ -83,7 +105,8 @@ function refreshIndexDiv(){
 	$("#location-index").show();
 	$("#location-user").hide();
 	$("#location-group").hide();
-	$("#locationMenu").empty();
+	$("#locationMenuRt").empty();
+	$("#locationMenuLt").empty();
 	brite.display('IndexComponent',{});	
 }
 
@@ -92,6 +115,16 @@ function isInGroupList(list,obj){
 	var glen = list.length;
 	for(var i=0;i<glen;i++){
 		if(list[i].group_id==obj.id){
+			return true;
+		}		
+	}
+	return false;
+}
+
+function isInUserList(list,obj){
+	var glen = list.length;
+	for(var i=0;i<glen;i++){
+		if(list[i].user_id==obj.id){
 			return true;
 		}		
 	}
@@ -117,4 +150,22 @@ function parseUser2Json(user,userGroups){
 	userJson.email = user.email;
 	userJson.pno = user.pno;
 	return userJson;
+}
+
+function getUserAndGroups(u){
+    var dfd = $.Deferred();
+	brite.dm.list("GroupUser",{matchs:{user_id:u.id}}).done(function(userGroupList){
+		brite.dm.list("Groups").done(function(groupList){
+			var gnames = "";
+			for(var k in groupList){											
+				if(isInGroupList(userGroupList,groupList[k])){
+					gnames+= gnames==""?groupList[k].name:","+groupList[k].name;
+				}											
+			}
+			gnames = gnames==""?"-":gnames;
+			u.groups = gnames;
+			dfd.resolve(u);
+		});
+    });
+    return dfd.promise();
 }

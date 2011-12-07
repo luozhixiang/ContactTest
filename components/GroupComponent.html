@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	brite.registerComponent("GroupComponent",
 		{
-			parent: "#locationMenu"
+			parent: "#locationMenuRt"
 		},
 		{
 			create: function(data){				
@@ -32,15 +32,20 @@
 </script>
 <script id="tmplGroupContent" type="text/html">
 <div class="operateGroups">
+  <div class="groupTit"></div>
   <div class="groupAddDiv"> 
     <span class="groupAddSpan">GroupName:</span>
     <input id='groupNameInput' type="text">
     <br> 
   </div>
-  <input type="button" value="Add" class="addButt addOrUpdateGroup">
+  <div class="subbut">
+      <input type="button" value="Add" class="addBut addOrUpdateGroup">
+  </div>
 </div>
 
 <div class="operateGroup">
+  <div class="cz">
+  </div>
   <div class="groupList">
     <div class="groupTitle"> 
       <span class="groupNameSpan">Name</span>

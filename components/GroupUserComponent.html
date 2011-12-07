@@ -1,0 +1,39 @@
+<script type="text/javascript">
+	brite.registerComponent("GroupUserComponent",
+		{
+			parent: "#locationMenuLt"
+		},
+		{
+			create: function(data){				
+				var json = {};
+				json.groups = data;
+				var $e = $($("#tmplGroupUserContent").render(json));
+				return $e;
+			},
+			postDisplay:function(data,config){
+               
+				this.$element.delegate(".groupNameSpan","click",function(){
+					var objRef = $(this).bObjRef("Groups");
+					if (objRef){
+						refreshUserListDiv(objRef.id);
+					}
+				});	
+			}
+		});
+
+</script>
+<script id="tmplGroupUserContent" type="text/html">
+<div class="usergroup">
+  <div class="usergroupTit">grounps</div>
+  <ul>
+     <li data-obj_type="Groups">
+		<span class="groupNameSpan">AllUser</span>
+	 </li>
+	{{each groups}}
+     <li data-obj_type="Groups" data-obj_id="${id}">
+		<span class="groupNameSpan">${name}</span>
+	 </li>
+	{{/each}}
+  </ul>
+</div>
+</script>

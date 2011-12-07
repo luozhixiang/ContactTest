@@ -12,38 +12,30 @@ body {
 }
 
 .cz {
-	width: 100%;
-	height: 38px;
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #09101c),
-		color-stop(0.5, #09101d), color-stop(0.51, #222c3d),
-		color-stop(1, #5a6171) );
+	width:100%;
+	height:38px;
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #09101c), color-stop(0.5, #09101d), color-stop(0.51, #222c3d), color-stop(1, #5a6171));
+	background-image:-webkit-gradient(linear, left bottom, left top, from(#a8acb8), to(#f4f5f7));
 }
-
 .cz input {
-	height: 24px;
-	padding: 0 5px;
-	border: 1px solid #283043;
-	border-radius: 4px;
-	-moz-border-radius: 3px;
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #edeff3),
-		color-stop(0.5, #edeff3), color-stop(0.51, #ffffff),
-		color-stop(1, #ffffff) );
-	color: #333;
-	margin-top: 8px;
-	margin-left: 10px;
-	cursor: pointer;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
-		sans-serif;
-	font-size: 12px;
-	box-shadow: 0px 1px 1px #646e79
+	height:24px;
+	padding:0 5px;
+	border:1px solid #80868F;
+	border-radius:4px;
+	-moz-border-radius:3px;
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #edeff3), color-stop(0.5, #edeff3), color-stop(0.51, #ffffff), color-stop(1, #ffffff));
+	color:#333;
+	margin-top:8px;
+	margin-left:10px;
+	cursor:pointer;
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
+	font-size:12px;
+	box-shadow:0px 1px 1px #646e79
 }
-
 .cz input:hover {
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #1e4ee1),
-		color-stop(0.5, #1e4ee1), color-stop(0.51, #416ae5),
-		color-stop(1, #7c98ed) );
-	color: #eee;
-	text-shadow: 2px 2px 2px #838896
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #1e4ee1), color-stop(0.5, #1e4ee1), color-stop(0.51, #416ae5), color-stop(1, #7c98ed));
+	color:#eee;
+	text-shadow:2px 2px 2px #838896
 }
 
 .clear {
@@ -54,23 +46,26 @@ body {
 }
 
 .addBut {
-	height: 24px;
-	padding: 0 15px;
-	border: 1px solid #b6b6b6;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc),
-		color-stop(0.5, #ccc), color-stop(0.51, #ddd), color-stop(1, #ddd) );
-	color: #333;
-	margin-left: 10px;
-	cursor: pointer;
-	box-shadow: 2px 2px 1px #ccc;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
-		sans-serif;
-	font-size: 12px;
-	float: right;
-	margin: 0 230px 10px 0
+	height:24px;
+	padding:0 15px;
+	border:1px solid #b6b6b6;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc), color-stop(0.5, #ccc), color-stop(0.51, #ddd), color-stop(1, #ddd));
+	color:#333;
+	margin-left:10px;
+	cursor:pointer;
+	
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:12px;
+	float:right;
+	margin:0 27px 10px 0
 }
+.addBut:hover {
+	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #1e4ee1), color-stop(0.5, #1e4ee1), color-stop(0.51, #416ae5), color-stop(1, #7c98ed));
+	color:#eee;
+}
+
 .addButs {
 	height: 24px;
 	padding: 0 15px;
@@ -87,6 +82,7 @@ body {
 		sans-serif;
 	font-size: 12px;
 }
+
 .addButt {
 	height: 24px;
 	padding: 0 15px;
@@ -102,11 +98,11 @@ body {
 	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
 		sans-serif;
 	font-size: 12px;
-	float:right;
-	margin-right:126px;
-	margin-bottom:10px
+	float: right;
+	margin-right: 126px;
+	margin-bottom: 10px
 }
-.addBut:hover {
+.addButs:hover {
 	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #1e4ee1),
 		color-stop(0.5, #1e4ee1), color-stop(0.51, #416ae5),
 		color-stop(1, #7c98ed) );
@@ -115,16 +111,15 @@ body {
 
 /***********IndexComponent---start********************/
 .location {
-	width:98%;
+	width:980px;
 	height:auto;
 	overflow:hidden;
 	border:1px solid #000;
 	margin:10px auto;
 	font-size:12px;
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
 	border-radius:5px;
-	background:#0b1018;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
-		sans-serif;
+	background:#0b1018
 }
 
 .location .locationBar {
@@ -134,6 +129,7 @@ body {
 	line-height:30px;
 	color:#eee
 }
+
 .location .locationBar span {
 	padding:0 10px;
 	cursor:pointer;
@@ -146,7 +142,7 @@ body {
 
 .location .locationMenu {
 	background:#fff;
-	width:99%;
+	width:970px;
 	height:auto;
 	overflow:hidden;
 	margin:0 auto 10px auto;
@@ -172,44 +168,82 @@ body {
 	background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0, #232f4e), color-stop(0.5, #162344), color-stop(0.51, #343f5c), color-stop(1, #757d90));
 	text-shadow:1px 1px 1px #000
 }
-/***********IndexComponent---end********************/
 
-/***********UserComponent---start********************/
+.locationMenuLt {
+	width:242px;
+	float:left;
+	height:auto;
+	overflow:hidden
+}
+
+.locationMenuRt {
+	width:700px;
+	float:left;
+	height:auto;
+	overflow:hidden
+}
+
+/***********IndexComponent---end********************/
+	/***********UserComponent---start********************/
 .operateUsers {
-	width: 700px;
-	height: auto;
-	overflow: hidden;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	margin: 20px auto;
-	border: 1px solid #ccc;
-	box-shadow: 1px 1px 1px #ccc;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
-		sans-serif;
-	font-size: 12px;
-	line-height: 24px;
-	color: #333
+	width:698px;
+	height:auto;
+	overflow:hidden;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	margin:20px auto;
+	border:1px solid #80868f;
+	
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
+	font-size:12px;
+	line-height:24px;
+	background:#fff;
+	color:#333;
+	display: none;
+}
+
+.groupTit {
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	background-image:-webkit-gradient(linear, left bottom, left top, from(#a8acb8), to(#f4f5f7));
+	color:#717880;
+	font-weight:bold;
+	border-bottom:1px solid #80868f;
+	text-shadow:1px 1px 1px #eee;
 }
 
 .operateUsers .userAddDiv {
-	width: 480px;
-	margin: 10px auto;
-	height: auto;
-	overflow: auto;
-	margin-top: 13px
+	width:280px;
+	margin:10px auto;
+	height:auto;
+	overflow:auto;
+	margin-top:13px
 }
-.userAddDiv div{ width:100%;height:auto;overflow:hidden;margin-top:10px}
+
+.operateUsers .userAddDiv div {
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	margin-top: 10px
+}
+
+.subbut {
+	width:300px;
+	margin:0 auto
+}
+
 .operateUsers .userAddDiv span.userAddSpan {
-	width: 180px;
-	text-align: right;
-	display: block;
-	float: left;
+	width:80px;
+	text-align:right;
+	display:block;
+	float:left;
 }
 
 .operateUsers .userAddDiv input {
-	width: 180px;
-	float: left;
-	height: 18px
+	width:180px;
+	float:left;
+	height:18px
 }
 
 .operateUsers .userAddDiv input.addGroupToUser {
@@ -221,33 +255,28 @@ body {
 .operateUsers .userAddDiv .addUserGroupList {
 	width: 180px;
 	float: left;
-	height: 30px
 }
 
 .operateUser {
-	width: 700px;
-	height: auto;
-	overflow: hidden;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	margin: 20px auto;
-	border: 1px solid #000000;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	font-size: 12px;
-	line-height: 24px;
-	background: #0b1018
+	width:698px;
+	height:auto;
+	overflow:hidden;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	margin:20px auto;
+	border:1px solid #80868f;
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
+	font-size:12px;
+	line-height:24px;
+	
 }
 
 .operateUser .userList {
-	width: 680px;
-	height: auto;
-	margin: 5px auto;
-	margin-bottom: 10px;
-	overflow: auto;
-	border-bottom: 1px solid #e6e7eb;
-	background: #dcdfe5;
-	border-radius: 5px;
-	padding: 5px
+	width:698px;
+	height:auto;
+	overflow:auto;
+	border-bottom:1px solid #e6e7eb;
+	background:#e5e7eb;
 }
 
 .operateUser .userTitle {
@@ -266,29 +295,32 @@ body {
 }
 
 .operateUser .userNameSpan {
-	float:left;
+	float: left;
 	width: 20%;
+	text-indent:10px
 }
 
 .operateUser .userSpanClass {
-	float:left;
-	width: 30%;
+	float: left;
+	width: 20%;
 }
 
 .operateUser .operate {
-	float:left;
+	float: left;
 	width: 20%;
 	text-align: center
 }
 
-.operateUser .delUser{
+.operateUser .delUser {
 	cursor: pointer;
 }
 
 .operateUser .userContent>div {
-	width: 100%;
-	border-bottom: 1px solid #d3d5d9;
-	border-top: 1px solid #e6e7eb
+	width:100%;
+	border-top:1px solid #edeff1;
+	border-bottom:1px solid #d7d9db;
+	height:28px;
+	line-height:28px
 }
 
 .operateUser .updateExistUser {
@@ -298,9 +330,9 @@ body {
 .operateUser .delUser {
 	cursor: pointer;
 }
-/***********UserComponent---end********************/
 
-/***********GroupComponent---start********************/
+/***********UserComponent---end********************/
+	/***********GroupComponent---start********************/
 .operateGroups {
 	width: 500px;
 	height: auto;
@@ -314,7 +346,7 @@ body {
 		sans-serif;
 	font-size: 12px;
 	line-height: 24px;
-	color: #333
+	color: #333;
 }
 
 .operateGroups .groupAddDiv {
@@ -339,30 +371,25 @@ body {
 }
 
 .operateGroup {
-	width: 500px;
-	height: auto;
-	overflow: hidden;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	margin: 20px auto;
-	border: 1px solid #000000;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
-		sans-serif;
-	font-size: 12px;
-	line-height: 24px;
-	background: #0b1018
+	width:500px;
+	height:auto;
+	overflow:hidden;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	margin:20px auto;
+	border:1px solid #80868f;
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
+	font-size:12px;
+	line-height:24px;
+	
 }
 
 .operateGroup .groupList {
-	width: 480px;
-	height: auto;
-	margin: 5px auto;
-	margin-bottom: 5px;
-	overflow: auto;
-	border-bottom: 1px solid #e6e7eb;
-	background: #dcdfe5;
-	border-radius: 5px;
-	padding: 5px
+	width:500px;
+	height:auto;
+	overflow:auto;
+	border-bottom:1px solid #e6e7eb;
+	background:#e5e7eb;
 }
 
 .operateGroup .groupTitle {
@@ -371,12 +398,15 @@ body {
 }
 
 .operateGroup .groupNameSpan {
-	float:left;
+	text-indent:10px;
+	float: left;
 	width: 70%;
+	display: block;
 }
 
 .operateGroup .operate {
-	float:left;
+	display: block;
+	float: left;
 	width: 30%;
 	text-align: center
 }
@@ -387,40 +417,35 @@ body {
 	border-top: 1px solid #e6e7eb
 }
 
-.operateGroup .delGroup{
+.operateGroup .delGroup {
 	cursor: pointer;
 }
-/***********GroupComponent---end********************/
 
-/***********GroupDialogPrompt---start********************/
+/***********GroupComponent---end********************/
+	/***********GroupDialogPrompt---start********************/
 .operateGroupPrompt {
-	width: 500px;
-	height: auto;
-	overflow: hidden;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	margin: 20px auto;
-	border: 1px solid #000000;
-	font-family: "Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",
-		sans-serif;
-	font-size: 12px;
-	line-height: 24px;
-	background: #0b1018;
+	width:500px;
+	height:auto;
+	overflow:hidden;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	margin:20px auto;
+	border:1px solid #80868f;
+	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
+	font-size:12px;
+	line-height:24px;
+	
 	position: absolute;
-	top: 50px;
-	left: 30%;
+	top: 70px;
+	left: 40%;
 }
 
 .operateGroupPrompt .groupPromptList {
-	width: 480px;
-	height: auto;
-	margin: 5px auto;
-	margin-bottom: 10px;
-	overflow: auto;
-	border-bottom: 1px solid #e6e7eb;
-	background: #dcdfe5;
-	border-radius: 5px;
-	padding: 5px
+	width:500px;
+	height:auto;
+	overflow:auto;
+	border-bottom:1px solid #e6e7eb;
+	background:#e5e7eb;
 }
 
 .operateGroupPrompt .groupPromtTitle {
@@ -429,19 +454,65 @@ body {
 }
 
 .operateGroupPrompt .groupPromtName {
-	float:left;
+	text-indent:10px;
+	float: left;
 	width: 70%;
 }
 
 .operateGroupPrompt .operate {
-	float:left;
+	float: left;
 	width: 30%;
 	text-align: center
 }
+
 .operateGroupPrompt .groupPromtContent>div {
 	width: 100%;
 	border-bottom: 1px solid #d3d5d9;
 	border-top: 1px solid #e6e7eb
 }
-/***********GroupDialogPrompt---end********************/
 
+/***********GroupDialogPrompt---end********************/
+.usergroup {
+	width:240px;
+	height:auto;
+	overflow:hidden;
+	background:#e5e7eb;
+	border:1px solid #80868f;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	margin-top:20px;
+	border-left:none;
+	margin-bottom:10px
+}
+
+.usergroup .usergroupTit {
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	background-image:-webkit-gradient(linear, left bottom, left top, from(#a8acb8), to(#f4f5f7));
+	color:#717880;
+	font-weight:bold;
+	border-bottom:1px solid #80868f;
+	text-shadow:1px 1px 1px #eee;
+}
+
+.usergroup li {
+	line-height:28px;
+	height:28px;
+	color:#040404;
+	border-top:1px solid #edeff1;
+	border-bottom:1px solid #d7d9db;
+	text-indent:10px;
+	cursor:pointer
+}
+
+.usergroup ul {
+	margin-bottom: 10px
+}
+
+.usergroup li:after {
+	content: ">";
+	display: block;
+	float: right;
+	margin-right: 10px;
+}
