@@ -13,16 +13,38 @@
 			postDisplay:function(data,config){
 				// --- Create Group --- //
 				this.$element.delegate(".addOrUpdateGroup","click",function(){
+					var groupId = $("#groupIdInput").val();
 					var groupJson = {};
 					groupJson.name=$('#groupNameInput').val();
-					brite.dm.create("Groups",groupJson);
+					if(groupId==""){
+						brite.dm.create("Groups",groupJson);
+					}else{
+						brite.dm.update("Groups",groupId,groupJson);
+					}
 				});
 				// --- delete Group --- //
+				this.$element.delegate(".groupCancle","click",function(){
+					$("#groupIdInput").val("");
+					$('#groupNameInput').val("");
+					$(".addOrUpdateGroup").val("Add");
+				});	
+				
 				this.$element.delegate(".delGroup","click",function(){
 					var objRef = $(this).bObjRef("Groups");
 					if (objRef){
 						brite.dm.remove("Groups",{id:objRef.id}).done(function(){
 							brite.dm.remove("GroupUser",{group_id:objRef.id});
+						});
+					}
+				});	
+				
+				this.$element.delegate(".updateExistGroup","click",function(){
+					var objRef = $(this).bObjRef("Groups");
+					if (objRef){
+						brite.dm.get("Groups",objRef.id).done(function(group){
+							$("#groupNameInput").val(group.name);
+							$("#groupIdInput").val(group.id);
+							$(".addOrUpdateGroup").val("update");
 						});
 					}
 				});	
@@ -36,9 +58,11 @@
   <div class="groupAddDiv"> 
     <span class="groupAddSpan">GroupName:</span>
     <input id='groupNameInput' type="text">
+    <input id='groupIdInput' value="" type="hidden">
     <br> 
   </div>
   <div class="subbut">
+      <input type="button" value="Cancle" class="addBut groupCancle">
       <input type="button" value="Add" class="addBut addOrUpdateGroup">
   </div>
 </div>
@@ -56,7 +80,11 @@
 	 {{each groups}}
       <div data-obj_type="Groups" data-obj_id="${id}" >
 		<span class="groupNameSpan">${name}</span>
-		<span class="operate"><span class='delGroup'>X</span></span>
+		<span class="operate">
+			<span class='delGroup'>X</span>
+			<span>&nbsp;</span>
+			<span class='updateExistGroup'>update</span>
+		</span>
         <div class="clear"></div>
       </div>
 	{{/each}}

@@ -421,6 +421,10 @@ body {
 	cursor: pointer;
 }
 
+.operateGroup .updateExistGroup {
+	cursor: pointer;
+}
+
 /***********GroupComponent---end********************/
 	/***********GroupDialogPrompt---start********************/
 .operateGroupPrompt {
