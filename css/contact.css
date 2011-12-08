@@ -434,7 +434,7 @@ body {
 	font-family:"Microsoft yahei", "Lucida Sans Unicode", "Lucida Grande",sans-serif;
 	font-size:12px;
 	line-height:24px;
-	
+	z-index:22;
 	position: absolute;
 	top: 70px;
 	left: 40%;
@@ -515,4 +515,14 @@ body {
 	display: block;
 	float: right;
 	margin-right: 10px;
+}
+
+
+#notTransparentScreen{
+	position:absolute;
+	left:0;right:0;bottom:0;top:0;
+	background:#000000;
+	opacity:0.3;
+	filter:alpha(opacity=30);
+	z-index:18;
 }

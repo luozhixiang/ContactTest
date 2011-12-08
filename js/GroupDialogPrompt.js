@@ -13,6 +13,7 @@ var briteTest = briteTest || {};
 	GroupDialogPrompt.prototype.create = function(data,config){
 		var json = {};
 		json.groups = data;
+		$("body").append("<div id='notTransparentScreen'></div>");
         var html = $("#tmplGroupPromptContent").render(json);
         var $e = $(html);
         return $e;		
@@ -60,6 +61,7 @@ var briteTest = briteTest || {};
     
     // this will be call by this component when the user close the dialog by answering or pressing esc
     GroupDialogPrompt.prototype.close = function(){
+    	$("body").find("#notTransparentScreen").remove();
         this.$element.bRemove();
     }
     // --------- /Custom GroupDialogPrompt Public Methods --------- //			
