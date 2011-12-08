@@ -90,7 +90,18 @@
                         $(".addUserGroupList").html("");
                         $(".addUserGroupList").data("groupids",[]);
                         $(".operateUsers").show();
-					});
+					});		
+								
+					this.$element.delegate(".userCancle","click",function(){
+						$(".updateUser").val("Add");
+						$('#useridInput').val("");
+						$('#nameInput').val("");
+						$('#emailInput').val("");
+						$('#phoneNumberInput').val("");
+                        $(".addUserGroupList").html("");
+                        $(".addUserGroupList").data("groupids",[]);
+                        $(".operateUsers").show();
+					});					
 					
 					this.$element.delegate(".updateExistUser","click",function(){
 						var objRef = $(this).bObjRef("Users");
@@ -145,7 +156,7 @@
      </div>
      <div class="subbut">
   		 <input type="button" value="Add" class="addBut updateUser">
- 		 <input type="button" value="Cancle" class="addBut">
+ 		 <input type="button" value="Cancle" class="addBut userCancle">
      </div>
 </div>
 
