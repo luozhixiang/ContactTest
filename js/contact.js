@@ -1,5 +1,6 @@
 var _SQLiteDb;
 var daoCallBackEventListeners = {};
+var hasSyngoogleToSQLite = false;
 $(function(){
 	// sqlit database connection
 	var databaseOptions = {
@@ -14,14 +15,32 @@ $(function(){
 			databaseOptions.displayName,
 			databaseOptions.maxSize
 		);		
-	brite.registerDao("Groups",new brite.dao.SQLiteDao("Groups","id",[{column:'name',dtype:'TEXT'}]));
-	brite.registerDao("Users",new brite.dao.SQLiteDao("Users","id",[{column:'name',dtype:'TEXT'},{column:'email',dtype:'TEXT'},{column:'pno',dtype:'TEXT'}]));	
+	brite.registerDao("Groups",new brite.dao.SQLiteDao("Groups","id",[{column:'google_gid',dtype:'TEXT'},{column:'name',dtype:'TEXT'}]));
+	brite.registerDao("Users",new brite.dao.SQLiteDao("Users","id",[{column:'google_uid',dtype:'TEXT'},{column:'name',dtype:'TEXT'},{column:'email',dtype:'TEXT'},{column:'pno',dtype:'TEXT'}]));	
 	brite.registerDao("GroupUser",new brite.dao.SQLiteDao("GroupUser","id",[{column:'group_id',dtype:'INTEGER'},{column:'user_id',dtype:'INTEGER'}]));
+	brite.registerDao("GoogleContact",new brite.dao.GoogleContactDao());
+	brite.registerDao("GoogleGroup",new brite.dao.GoogleGroupDao());
+	brite.registerDao("GoogleGroupContact",new brite.dao.GoogleGroupContactDao());
 	
 	initData();
 	
 	$("#location-index").click(function(){
 		refreshIndexDiv();
+	});
+	
+	ng.daos.logOut();
+	
+	$("#location-login").click(function(){
+		ng.daos.getToken(function(){
+			$("#location-login").hide();
+			$("#location-logoff").show();
+		});
+	});
+	
+	$("#location-logoff").click(function(){
+		ng.daos.logOut();
+		$("#location-login").show();
+		$("#location-logoff").hide();
 	});
 	
 });
@@ -30,23 +49,23 @@ function initData(){
 	var dfd2 = brite.dm.remove("Groups");	
 	var dfd3 = brite.dm.remove("GroupUser");
 			
-	var dfd4 =brite.dm.create("Users",{email:"001@a.com",name:"Mike1",pno:"123456"});
-	var dfd5 =brite.dm.create("Users",{email:"002@a.com",name:"Mike2",pno:"123456"});
-	var dfd6 =brite.dm.create("Users",{email:"003@a.com",name:"Mike3",pno:"123456"});
-	var dfd7 =brite.dm.create("Users",{email:"004@a.com",name:"Mike4",pno:"123456"});
-	var dfd8 =brite.dm.create("Users",{email:"005@a.com",name:"Mike5",pno:"123456"});
-		
-	var dfd9 =brite.dm.create("Groups",{name:"group1"});
-	var dfd10 =brite.dm.create("Groups",{name:"group2"});
+//	var dfd4 =brite.dm.create("Users",{email:"001@a.com",name:"Mike1",pno:"123456"});
+//	var dfd5 =brite.dm.create("Users",{email:"002@a.com",name:"Mike2",pno:"123456"});
+//	var dfd6 =brite.dm.create("Users",{email:"003@a.com",name:"Mike3",pno:"123456"});
+//	var dfd7 =brite.dm.create("Users",{email:"004@a.com",name:"Mike4",pno:"123456"});
+//	var dfd8 =brite.dm.create("Users",{email:"005@a.com",name:"Mike5",pno:"123456"});
+//		
+//	var dfd9 =brite.dm.create("Groups",{name:"group1"});
+//	var dfd10 =brite.dm.create("Groups",{name:"group2"});
 	refreshIndexDiv();
-	$.when(dfd1,dfd2,dfd3,dfd4,dfd5,dfd6,dfd7,dfd8,dfd9,dfd10).done(function(){
-		brite.addDataChangeListener("Users",function(daoChangeEvent){
-			refreshUserListDiv();
-		});
-		brite.addDataChangeListener("Groups",function(daoChangeEvent){
-			refreshGroupListDiv();
-		});
-	});
+//	$.when(dfd1,dfd2,dfd3).done(function(){
+//		brite.addDataChangeListener("Users",function(daoChangeEvent){
+//			refreshUserListDiv();
+//		});
+//		brite.addDataChangeListener("Groups",function(daoChangeEvent){
+//			refreshGroupListDiv();
+//		});
+//	});
 	
 }
 function parseRows2Json(rows){
@@ -162,10 +181,113 @@ function getUserAndGroups(u){
 					gnames+= gnames==""?groupList[k].name:","+groupList[k].name;
 				}											
 			}
-			gnames = gnames==""?"-":gnames;
+			gnames = gnames==""?null:gnames;
 			u.groups = gnames;
 			dfd.resolve(u);
 		});
     });
     return dfd.promise();
+}
+
+function getArraystr(arr){
+	var str = "";
+	for(var e in arr){
+		str+= "," + arr[e];
+	}
+	return str==""? "" : str.substring(1);
+}
+
+function synGoogledataToSQLite(){
+	var flag = ng.daos.hasToken();
+	if(flag){
+		if(!hasSyngoogleToSQLite){
+			$.when(synGoogleContacts(),synGoogleGroups()).done(function(){
+				synGoogleContactGroup().done(function(){
+					hasSyngoogleToSQLite = true;
+					refreshUserGroupListDiv();
+					refreshUserListDiv();
+				});
+			});
+		}
+	}else{
+        alert("You should login first!");
+	}
+}
+
+
+function synGoogleContacts(){
+	var dfd = $.Deferred();
+	brite.dm.list("GoogleContact").done(function(GoogleContacts){
+		var len = GoogleContacts.length;
+		var createdcount = 0;
+		if(len==0){
+			dfd.resolve();
+		}else{
+			for(var g in GoogleContacts){
+				var userJson = {};
+				userJson.google_uid = GoogleContacts[g].id;
+				userJson.name = GoogleContacts[g].name;
+				userJson.email = getArraystr(GoogleContacts[g].emails);
+				userJson.pno = getArraystr(GoogleContacts[g].phone);
+				brite.dm.create("Users",userJson).done(function(){
+					createdcount++;
+					if(createdcount==len) dfd.resolve();
+				});
+			}	
+		}
+	});	
+	return dfd.promise();
+}
+
+function synGoogleGroups(){
+	var dfd = $.Deferred();
+	brite.dm.list("GoogleGroup").done(function(GoogleGroups){
+		var len = GoogleGroups.length;
+		var createdcount = 0;
+		if(len==0){
+			dfd.resolve();
+		}else{
+			for(var g in GoogleGroups){
+				var groupJson = {};
+				groupJson.google_gid = GoogleGroups[g].id;
+				groupJson.name = GoogleGroups[g].name;
+				brite.dm.create("Groups",groupJson).done(function(){
+					createdcount++;
+					if(createdcount==len) dfd.resolve();
+				});
+			}	
+		}
+	});	
+	return dfd.promise();
+}
+
+function synGoogleContactGroup(){
+	var dfd = $.Deferred();
+	brite.dm.list("GoogleGroupContact").done(function(GroupContacts){
+		var len = GroupContacts.length;
+		var createdcount = 0;
+		if(len==0){
+			dfd.resolve();
+		}else{
+			for(var g in GroupContacts){
+				creatGroupUserByGoogleContactGroup(GroupContacts[g]).done(function(){
+					createdcount++;
+					if(createdcount==len) dfd.resolve();
+				});
+			}	
+		}
+	});	
+	return dfd.promise();
+}
+
+function creatGroupUserByGoogleContactGroup(GroupContact){
+	var dfd = $.Deferred();
+	brite.dm.list("Users",{matchs:{google_uid:GroupContact[1]}}).done(function(userList){
+		brite.dm.list("Groups",{matchs:{google_gid:GroupContact[0]}}).done(function(groupList){
+			brite.dm.create("GroupUser",{group_id:groupList[0].id,user_id:userList[0].id}).done(function(){
+				dfd.resolve();
+			});
+		});
+	});
+	return dfd.promise();
 }

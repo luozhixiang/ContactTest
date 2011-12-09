@@ -9,9 +9,13 @@
 <script type="text/javascript" src="js/brite.core.js" ></script>
 <script type="text/javascript" src="js/brite.dm.js" ></script>
 <script type="text/javascript" src="js/brite.event.js" ></script>
-<script type="text/javascript" src="js/contact.js" ></script>
 <script type="text/javascript" src="js/GroupDialogPrompt.js"></script>
 <script type="text/javascript" src="js/dao/SQLiteDao.js" ></script>
+<script type="text/javascript" src="js/dao/GContactDao.js" ></script>
+<script type="text/javascript" src="js/dao/GGroupDao.js" ></script>
+<script type="text/javascript" src="js/dao/GGroupContact.js" ></script>
+<script type="text/javascript" src="js/ng-daos-gdata.js" ></script>
+<script type="text/javascript" src="js/contact.js" ></script>
 </head>
 <body>
 <!-- 
@@ -29,6 +33,8 @@ Please select groups for <span id="selectedUname"></span>
 	  <span id="location-index">Index&gt;&gt;</span>
 	  <span id="location-user">UserManager&gt;&gt;</span>
 	  <span id="location-group">GroupManager&gt;&gt;</span>
+	  <span class="location-login" id="location-login">Login</span>
+	  <span class="location-login" style="display: none" id="location-logoff">Logoff</span>
   </div>
   <div id="locationMenu" class="locationMenu">
   <div id="locationMenuLt" class="locationMenuLt"></div>

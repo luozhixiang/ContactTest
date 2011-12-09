@@ -21,6 +21,7 @@
                     }
 			    
 				    this.$element.find(".addUserGroupList").data("groupids",[]);
+				    
 					// --- Create User --- //
 					this.$element.find('.updateUser').click(function(){
 						var userJson = {};
@@ -29,19 +30,33 @@
 						userJson.pno=$('#phoneNumberInput').val();
 						var userid=$('#useridInput').val();
 						var groupids = $(".addUserGroupList").data("groupids");
+						var len = groupids.length;
+						var createcount = 0;
 						if(userid==""){
 							brite.dm.create("Users",userJson).done(function(uid){
 								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
-									for(var k in groupids){
-										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
-									}		
+									if(len==0){
+										refreshUserListDiv();
+									}else{
+										for(var k in groupids){
+											brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid}).done(function(){
+												createcount++;if(len==createcount)refreshUserListDiv();
+											});
+										}		
+									}
 								});
 							});
 						}else{
 							brite.dm.update("Users",userid,userJson).done(function(uid){
 								brite.dm.remove("GroupUser",{user_id:uid}).done(function(){
-									for(var k in groupids){
-										brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid});
+									if(len==0){
+										refreshUserListDiv();
+									}else{
+										for(var k in groupids){
+											brite.dm.create("GroupUser",{group_id:groupids[k],user_id:uid}).done(function(){
+												createcount++;if(len==createcount)refreshUserListDiv();
+											});
+										}		
 									}		
 								});
 							});
@@ -77,7 +92,7 @@
 					this.$element.delegate(".delUser","click",function(){
 						var objRef = $(this).bObjRef("Users");
 						if (objRef){
-							brite.dm.remove("Users",{id:objRef.id}).done(function(){});
+							brite.dm.remove("Users",{id:objRef.id}).done(function(){refreshUserListDiv();});
 						}
 					});
 					
@@ -130,6 +145,11 @@
 							});
 						}
 					});
+
+					this.$element.delegate(".syndata-from-google","click",function(){
+						synGoogledataToSQLite();
+					});
+					
 			}
 		});
 		
@@ -163,6 +183,7 @@
 <div class="operateUser">
   <div class="cz">
   	<input type="button" class="addNewUser" value="addNewUser">
+  	<input type="button" class="syndata-from-google" value="Synch Data">
   </div>
   <div class="userList">
     <div class="userTitle"> 
@@ -182,9 +203,9 @@
 <script id="tmplUserContent-tr" type="text/html">
       <div data-obj_type="Users" data-obj_id="${id}" >
 		<span class="userNameSpan">${name}</span>
-		<span class="userSpanClass">${email}</span>
-		<span class="userSpanClass">${pno}</span>
-		<span class="userSpanClass">${groups}</span>
+		<span class="userSpanClass">{{if email}}${email}{{else}}&nbsp;{{/if}}</span>
+		<span class="userSpanClass">{{if pno}}${pno}{{else}}&nbsp;{{/if}}</span>
+		<span class="userSpanClass">{{if groups}}${groups}{{else}}&nbsp;{{/if}}</span>
 		<span class="operate">
 			<span class='delUser'>X</span>
 			<span>&nbsp;</span>

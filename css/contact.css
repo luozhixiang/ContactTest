@@ -183,6 +183,24 @@ body {
 	overflow:hidden
 }
 
+.location .locationBar span.location-login{
+   display:block;
+   width: 60px;
+   height: 24px;
+   margin-top: 2px;
+   float: right;
+   margin-right: 10px;
+   border-radius:3px;
+   text-align: center;
+   line-height: 24px;
+}
+
+.location .locationBar span.location-login:hover{
+   	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ccc),
+		color-stop(0.5, #ccc), color-stop(0.51, #ddd), color-stop(1, #ddd) );
+	color: #000;
+}
+
 /***********IndexComponent---end********************/
 	/***********UserComponent---start********************/
 .operateUsers {
@@ -530,3 +548,5 @@ body {
 	filter:alpha(opacity=30);
 	z-index:18;
 }
+
+

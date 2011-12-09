@@ -17,9 +17,9 @@
 					var groupJson = {};
 					groupJson.name=$('#groupNameInput').val();
 					if(groupId==""){
-						brite.dm.create("Groups",groupJson);
+						brite.dm.create("Groups",groupJson).done(function(){refreshGroupListDiv();});
 					}else{
-						brite.dm.update("Groups",groupId,groupJson);
+						brite.dm.update("Groups",groupId,groupJson).done(function(){refreshGroupListDiv();});
 					}
 				});
 				// --- delete Group --- //
@@ -33,7 +33,7 @@
 					var objRef = $(this).bObjRef("Groups");
 					if (objRef){
 						brite.dm.remove("Groups",{id:objRef.id}).done(function(){
-							brite.dm.remove("GroupUser",{group_id:objRef.id});
+							brite.dm.remove("GroupUser",{group_id:objRef.id}).done(function(){refreshGroupListDiv();});
 						});
 					}
 				});	
