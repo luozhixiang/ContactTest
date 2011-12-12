@@ -4,7 +4,7 @@ var hasSyngoogleToSQLite = false;
 $(function(){
 	// sqlit database connection
 	var databaseOptions = {
-			fileName: "sqlite_contacttest",
+			fileName: "sqlitecontacttest",
 			version: "1.0",
 			displayName: "SQLite Contact Test",
 			maxSize: 1024
@@ -28,7 +28,10 @@ $(function(){
 		refreshIndexDiv();
 	});
 	
-	ng.daos.logOut();
+	if(ng.daos.hasToken()){
+		$("#location-login").hide();
+		$("#location-logoff").show();
+	}
 	
 	$("#location-login").click(function(){
 		ng.daos.getToken(function(){
@@ -48,7 +51,7 @@ function initData(){
 	var dfd1 = brite.dm.remove("Users");
 	var dfd2 = brite.dm.remove("Groups");	
 	var dfd3 = brite.dm.remove("GroupUser");
-			
+	localStorage.removeItem("hasSyngoogleToSQLite"); 
 //	var dfd4 =brite.dm.create("Users",{email:"001@a.com",name:"Mike1",pno:"123456"});
 //	var dfd5 =brite.dm.create("Users",{email:"002@a.com",name:"Mike2",pno:"123456"});
 //	var dfd6 =brite.dm.create("Users",{email:"003@a.com",name:"Mike3",pno:"123456"});
@@ -82,7 +85,6 @@ function refreshUserListDiv(groupid){
 	$("#location-index").show();
 	$("#location-user").show();
 	$("#location-group").hide();
-	$("#locationMenuRt").empty();
 	if(groupid){
 		brite.dm.list("GroupUser",{matchs:{group_id:groupid}}).done(function(userGroupList){
 			brite.dm.list("Users").done(function(userList){
@@ -107,14 +109,12 @@ function refreshGroupListDiv(){
 		$("#location-index").show();
 		$("#location-user").hide();
 		$("#location-group").show();
-		$("#locationMenuRt").empty();
 		brite.display('GroupComponent',results);	
 	});
 }
 
 function refreshUserGroupListDiv(){	
 	brite.dm.list("Groups").done(function(results){
-		$("#locationMenuLt").empty();
 		brite.display('GroupUserComponent',results);	
 	});
 	
@@ -124,7 +124,6 @@ function refreshIndexDiv(){
 	$("#location-index").show();
 	$("#location-user").hide();
 	$("#location-group").hide();
-	$("#locationMenuRt").empty();
 	$("#locationMenuLt").empty();
 	brite.display('IndexComponent',{});	
 }
@@ -199,13 +198,20 @@ function getArraystr(arr){
 
 function synGoogledataToSQLite(){
 	var flag = ng.daos.hasToken();
+	var hasSyngoogleToSQLite = localStorage.hasSyngoogleToSQLite;
 	if(flag){
-		if(!hasSyngoogleToSQLite){
-			$.when(synGoogleContacts(),synGoogleGroups()).done(function(){
-				synGoogleContactGroup().done(function(){
-					hasSyngoogleToSQLite = true;
-					refreshUserGroupListDiv();
-					refreshUserListDiv();
+		if( typeof hasSyngoogleToSQLite =="undefined"){
+			brite.dm.remove("Users").done(function(){
+				brite.dm.remove("Groups").done(function(){
+					brite.dm.remove("GroupUser").done(function(){
+						$.when(synGoogleContacts(),synGoogleGroups()).done(function(){
+							synGoogleContactGroup().done(function(){
+								localStorage.setItem("hasSyngoogleToSQLite",true); 
+								refreshUserGroupListDiv();
+								refreshUserListDiv();
+							});
+						});
+					});		
 				});
 			});
 		}
