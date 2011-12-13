@@ -28,6 +28,7 @@
 					$("#groupIdInput").val("");
 					$('#groupNameInput').val("");
 					$(".addOrUpdateGroup").val("Add");
+					$(".operateGroups").hide();
 				});	
 				
 				this.$element.delegate(".delGroup","click",function(){
@@ -38,17 +39,29 @@
 						});
 					}
 				});	
+
+				this.$element.delegate(".addNewGroup","click",function(){
+					$("#groupNameInput").val("");
+					$("#groupIdInput").val("");
+					$(".addOrUpdateGroup").val("Add");
+                    $(".operateGroups").show();
+				});	
 				
 				this.$element.delegate(".updateExistGroup","click",function(){
 					var objRef = $(this).bObjRef("Groups");
 					if (objRef){
 						brite.dm.get("Groups",objRef.id).done(function(group){
+							$(".operateGroups").show();
 							$("#groupNameInput").val(group.name);
 							$("#groupIdInput").val(group.id);
 							$(".addOrUpdateGroup").val("update");
 						});
 					}
 				});	
+				
+				this.$element.delegate(".syndata-from-google","click",function(){
+					synGoogledataToSQLite("group");
+				});
 			}
 		});
 
@@ -70,6 +83,7 @@
 
 <div class="operateGroup">
   <div class="cz">
+	<input type="button" class="addNewGroup" value="addNewGroup">
   </div>
   <div class="groupList">
     <div class="groupTitle"> 

@@ -196,7 +196,7 @@ function getArraystr(arr){
 	return str==""? "" : str.substring(1);
 }
 
-function synGoogledataToSQLite(){
+function synGoogledataToSQLite(divtype){
 	var flag = ng.daos.hasToken();
 	var hasSyngoogleToSQLite = localStorage.hasSyngoogleToSQLite;
 	if(flag){
@@ -207,8 +207,12 @@ function synGoogledataToSQLite(){
 						$.when(synGoogleContacts(),synGoogleGroups()).done(function(){
 							synGoogleContactGroup().done(function(){
 								localStorage.setItem("hasSyngoogleToSQLite",true); 
-								refreshUserGroupListDiv();
-								refreshUserListDiv();
+								if(divtype){
+									refreshGroupListDiv()
+								}else{
+									refreshUserGroupListDiv();
+									refreshUserListDiv();
+								}
 							});
 						});
 					});		
